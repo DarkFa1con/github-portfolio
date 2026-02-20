@@ -3,177 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MH // GITHUB QUANTUM INTERFACE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Audiowide&display=swap" rel="stylesheet">
+    <title>darkfa1con // GITHUB QUANTUM INTERFACE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Audiowide&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* RESET & GLOBAL - keeping the sci-fi foundation */
+        /* RESET & GLOBAL - enhanced sci-fi */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background: #020208;
+            background: #0a0a0f;
+            background-image: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.05) 0%, transparent 30%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.05) 0%, transparent 30%);
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
-            color: #a0f0ff;
+            color: #e0f0ff;
             position: relative;
             min-height: 100vh;
         }
 
-        /* ===== ATMOSPHERE LAYERS (enhanced) ===== */
+        /* ===== ENHANCED ATMOSPHERE ===== */
         .holo-grid {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(90deg, rgba(255, 0, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
             pointer-events: none;
             z-index: 2;
-            animation: gridShift 12s linear infinite;
+            animation: gridShift 20s linear infinite;
         }
 
         @keyframes gridShift {
-            0% { transform: perspective(500px) rotateX(0deg) translateZ(0); }
-            50% { transform: perspective(500px) rotateX(1deg) translateZ(10px); }
-            100% { transform: perspective(500px) rotateX(0deg) translateZ(0); }
+            0% { transform: perspective(1000px) rotateX(0deg) translateZ(0); }
+            50% { transform: perspective(1000px) rotateX(0.5deg) translateZ(20px); }
+            100% { transform: perspective(1000px) rotateX(0deg) translateZ(0); }
         }
 
-        .energy-aura {
-            position: fixed;
-            top: 50%; left: 50%;
-            width: 80vmax; height: 80vmax;
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
-            transform: translate(-50%, -50%);
-            filter: blur(60px);
-            z-index: 1;
-            mix-blend-mode: screen;
-            animation: pulseEnergy 8s ease-in-out infinite;
-        }
-
-        @keyframes pulseEnergy {
-            0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.2); }
-        }
-
-        .crystal-scan {
+        .energy-field {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(0deg, 
-                rgba(0, 255, 255, 0.03) 0px, 
-                rgba(0, 0, 0, 0.5) 2px, 
-                transparent 3px,
-                transparent 5px);
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                        rgba(0, 255, 255, 0.1) 0%, 
+                        rgba(255, 0, 255, 0.05) 30%, 
+                        transparent 60%);
             pointer-events: none;
-            z-index: 5;
-            mix-blend-mode: overlay;
-            animation: scanMove 12s linear infinite;
+            z-index: 3;
+            mix-blend-mode: screen;
         }
 
-        @keyframes scanMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 20px; }
+        .floating-crystals {
+            position: fixed;
+            width: 100%; height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="cyan" stroke-width="0.5"/></svg>');
+            background-size: 100px 100px;
+            pointer-events: none;
+            z-index: 1;
+            animation: rotateCrystals 200s linear infinite;
         }
 
-        .vignette-complex {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.8) 90%);
-            box-shadow: inset 0 0 150px rgba(0, 180, 255, 0.3);
-            pointer-events: none; z-index: 6;
+        @keyframes rotateCrystals {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.5); }
+        }
+
+        .scanline-enhanced {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(0, 255, 255, 0.02) 50%, 
+                transparent 100%);
+            background-size: 100% 8px;
+            pointer-events: none;
+            z-index: 7;
+            animation: scanMove 8s linear infinite;
         }
 
         /* ===== BOOT SCREEN ===== */
         #boot-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: #010114;
+            background: #050510;
             z-index: 9999;
             display: flex; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-family: 'Orbitron', monospace;
-            backdrop-filter: blur(10px);
+            font-family: 'Syncopate', monospace;
+            backdrop-filter: blur(20px);
             transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 100px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 100px rgba(0, 255, 255, 0.3);
         }
 
         .boot-central {
-            max-width: 800px;
+            max-width: 900px;
             width: 90%;
-            padding: 30px;
-            border: 1px solid #00ffff;
-            box-shadow: 0 0 30px #00ffff, inset 0 0 20px rgba(0,255,255,0.2);
-            background: rgba(0, 10, 20, 0.7);
+            padding: 40px;
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 50px #00ffff, inset 0 0 30px rgba(0,255,255,0.3);
+            background: rgba(0, 10, 20, 0.8);
             backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .boot-central::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, cyan, magenta, cyan);
+            animation: rotate 4s linear infinite;
+            opacity: 0.1;
         }
 
         .boot-header {
             display: flex; justify-content: space-between;
-            color: cyan; margin-bottom: 30px;
+            color: #fff; margin-bottom: 30px;
             font-family: 'Audiowide', cursive;
-            border-bottom: 1px dashed cyan;
-            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 255, 255, 0.5);
+            padding-bottom: 15px;
+            text-shadow: 0 0 10px cyan;
         }
 
         .boot-graph {
-            height: 4px;
-            background: linear-gradient(90deg, cyan, magenta, cyan);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, cyan, magenta, cyan, transparent);
             width: 100%;
-            margin: 20px 0;
-            animation: bootScan 2s linear infinite;
+            margin: 30px 0;
+            animation: bootPulse 1.5s ease-in-out infinite;
         }
 
-        @keyframes bootScan {
-            0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; }
+        @keyframes bootPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         .boot-line {
-            font-size: 1.2rem;
-            margin: 10px 0;
-            color: #b0f0ff;
+            font-size: 1.1rem;
+            margin: 15px 0;
+            color: #b0ffff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            font-family: 'Orbitron', monospace;
             text-shadow: 0 0 5px cyan;
+            transform: translateX(0);
+            animation: slideIn 0.3s ease-out;
         }
 
-        .status-pulse {
-            width: 10px; height: 10px;
-            background: cyan;
-            border-radius: 50%;
-            box-shadow: 0 0 15px cyan;
-            animation: pulse 0.8s infinite;
-        }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .progress-bar {
-            height: 100%;
-            background: cyan;
-            box-shadow: 0 0 20px cyan;
-            transition: width 0.2s;
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         /* ===== CURSOR ===== */
         .cursor-energy-ring {
             position: fixed;
-            width: 60px; height: 60px;
-            border: 2px solid rgba(0, 255, 255, 0.6);
+            width: 80px; height: 80px;
+            border: 2px solid rgba(0, 255, 255, 0.4);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 30px cyan, inset 0 0 10px cyan;
+            box-shadow: 0 0 40px cyan, inset 0 0 20px cyan;
             mix-blend-mode: screen;
-            transition: 0.05s;
+            transition: width 0.2s, height 0.2s;
         }
 
         .cursor-core {
             position: fixed;
-            width: 8px; height: 8px;
+            width: 12px; height: 12px;
             background: white;
             border-radius: 50%;
-            box-shadow: 0 0 20px cyan, 0 0 40px blue;
+            box-shadow: 0 0 30px cyan, 0 0 60px magenta;
             pointer-events: none;
             z-index: 10000;
             transform: translate(-50%, -50%);
@@ -184,10 +188,10 @@
             position: fixed;
             top: 20px; left: 50%;
             transform: translateX(-50%);
-            width: 90%;
-            max-width: 1300px;
-            padding: 10px 30px;
-            background: rgba(0, 15, 30, 0.6);
+            width: 95%;
+            max-width: 1400px;
+            padding: 15px 40px;
+            background: rgba(10, 10, 25, 0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 255, 255, 0.3);
             border-radius: 60px;
@@ -195,78 +199,96 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
         }
 
         .logo-neon {
             font-family: 'Audiowide', cursive;
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, cyan, magenta);
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00ffff, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px cyan);
-            letter-spacing: 2px;
+            filter: drop-shadow(0 0 20px cyan);
+            letter-spacing: 3px;
         }
 
         .nav-links {
-            display: flex; gap: 40px;
+            display: flex; gap: 50px;
         }
 
         .nav-links a {
-            color: #ccf;
+            color: #fff;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.9rem;
+            letter-spacing: 3px;
+            font-size: 1rem;
             position: relative;
             padding: 5px 0;
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
-            background: cyan; box-shadow: 0 0 15px cyan;
             transition: 0.3s;
         }
 
-        .nav-links a:hover::before { width: 100%; }
+        .nav-links a::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: linear-gradient(90deg, cyan, magenta);
+            box-shadow: 0 0 15px cyan;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { text-shadow: 0 0 15px cyan; }
 
         .quantum-btn {
             background: transparent;
-            border: 1px solid cyan;
+            border: 2px solid cyan;
             color: cyan;
-            padding: 8px 25px;
-            border-radius: 30px;
+            padding: 10px 30px;
+            border-radius: 40px;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.2s;
+            letter-spacing: 2px;
+            transition: 0.3s;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
-            box-shadow: 0 0 15px transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quantum-btn::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: cyan;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            transition: width 0.4s, height 0.4s;
+            z-index: -1;
+        }
+
+        .quantum-btn:hover::before {
+            width: 300px; height: 300px;
         }
 
         .quantum-btn:hover {
-            background: cyan;
-            color: #000;
-            box-shadow: 0 0 40px cyan;
+            color: black;
+            border-color: white;
         }
 
         /* ===== MAIN CONTENT ===== */
         main {
             position: relative;
             z-index: 50;
-            max-width: 1300px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 140px 30px 60px;
+            padding: 150px 40px 60px;
         }
 
         section {
-            margin-bottom: 150px;
+            margin-bottom: 200px;
             opacity: 0;
             transform: translateY(60px);
-            transition: 1s cubic-bezier(0.5, 0, 0, 1);
+            transition: 1s cubic-bezier(0.2, 0.9, 0.3, 1);
         }
 
         section.revealed {
@@ -275,16 +297,19 @@
         }
 
         h2 {
-            font-family: 'Audiowide', cursive;
-            font-size: 3rem;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 3.5rem;
             margin-bottom: 60px;
-            background: linear-gradient(45deg, cyan, magenta);
+            background: linear-gradient(135deg, #fff, cyan, magenta);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             display: inline-block;
-            border-bottom: 2px solid cyan;
-            padding-bottom: 10px;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, cyan, magenta);
+            border-image-slice: 1;
+            padding-bottom: 15px;
             text-transform: uppercase;
+            letter-spacing: 5px;
         }
 
         /* HERO SECTION */
@@ -301,77 +326,83 @@
 
         .hero-tag {
             display: inline-block;
-            padding: 8px 20px;
+            padding: 12px 30px;
             background: rgba(0, 255, 255, 0.1);
-            border: 1px solid cyan;
+            border: 2px solid cyan;
             color: cyan;
             font-weight: bold;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(0,255,255,0.3);
+            border-radius: 40px;
+            font-size: 1.1rem;
         }
 
         .hero h1 {
-            font-size: 5rem;
-            font-family: 'Audiowide', cursive;
-            background: linear-gradient(to right, #fff, cyan, #a0f);
+            font-size: 6rem;
+            font-family: 'Syncopate', sans-serif;
+            background: linear-gradient(135deg, #fff, cyan, #ff88ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1.1;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 30px cyan);
+            filter: drop-shadow(0 0 50px cyan);
+            letter-spacing: 5px;
         }
 
         .hero-desc {
-            font-size: 1.2rem;
-            color: #bcd;
+            font-size: 1.3rem;
+            color: #d0e0ff;
             max-width: 600px;
-            margin-bottom: 40px;
-            border-left: 3px solid cyan;
-            padding-left: 20px;
+            margin-bottom: 50px;
+            border-left: 4px solid cyan;
+            padding-left: 30px;
+            line-height: 1.8;
         }
 
         .magnetic-btn {
             display: inline-block;
-            padding: 15px 45px;
+            padding: 18px 50px;
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid cyan;
             color: cyan;
             text-decoration: none;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             position: relative;
             overflow: hidden;
-            transition: 0.2s;
+            transition: 0.3s;
             backdrop-filter: blur(10px);
             border-radius: 50px;
+            font-size: 1.2rem;
         }
 
         .magnetic-btn::before {
             content: '';
             position: absolute; top: 50%; left: 50%;
             width: 0; height: 0;
-            background: cyan;
+            background: linear-gradient(135deg, cyan, magenta);
             transform: translate(-50%, -50%);
             border-radius: 50%;
-            transition: width 0.4s, height 0.4s;
+            transition: width 0.5s, height 0.5s;
             z-index: -1;
         }
 
         .magnetic-btn:hover::before {
-            width: 300px; height: 300px;
+            width: 400px; height: 400px;
         }
 
         .magnetic-btn:hover {
             color: black;
             border-color: white;
+            box-shadow: 0 0 50px cyan;
         }
 
         /* AVATAR */
         .hero-visual {
-            flex: 0 0 400px;
-            height: 400px;
+            flex: 0 0 450px;
+            height: 450px;
             position: relative;
             display: flex;
             justify-content: center;
@@ -379,34 +410,42 @@
         }
 
         .avatar-holo {
-            width: 320px; height: 320px;
+            width: 380px; height: 380px;
             position: relative;
-            animation: float3d 8s ease-in-out infinite;
+            animation: float3d 10s ease-in-out infinite;
             transform-style: preserve-3d;
         }
 
         @keyframes float3d {
             0%, 100% { transform: rotateY(0deg) rotateX(5deg) translateZ(0); }
-            50% { transform: rotateY(15deg) rotateX(-5deg) translateZ(30px); }
+            50% { transform: rotateY(20deg) rotateX(-5deg) translateZ(40px); }
         }
 
         .avatar-ring {
             position: absolute; top: 50%; left: 50%;
             width: 100%; height: 100%;
-            border: 3px solid rgba(0, 255, 255, 0.6);
+            border: 4px solid rgba(0, 255, 255, 0.6);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 60px cyan, inset 0 0 30px cyan;
+            box-shadow: 0 0 80px cyan, inset 0 0 40px cyan;
+        }
+
+        .avatar-ring::before, .avatar-ring::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 110%; height: 110%;
+            border: 2px dashed magenta;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: spin 15s linear infinite;
         }
 
         .avatar-ring::after {
-            content: '';
-            position: absolute; top: 50%; left: 50%;
-            width: 110%; height: 110%;
-            border: 1px dashed magenta;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: spin 12s linear infinite;
+            width: 120%; height: 120%;
+            border-color: cyan;
+            animation-direction: reverse;
+            animation-duration: 20s;
         }
 
         @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
@@ -415,259 +454,283 @@
             width: 100%; height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            filter: grayscale(0.2) contrast(1.5) drop-shadow(0 0 20px cyan);
-            border: 2px solid cyan;
+            filter: grayscale(0.1) contrast(1.4) drop-shadow(0 0 30px cyan);
+            border: 3px solid cyan;
         }
 
-        /* ===== GITHUB REPO SECTION ===== */
+        /* ===== GITHUB SECTION - ENHANCED (NO SEARCH) ===== */
         .github-header {
             display: flex;
             align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
+            justify-content: flex-end;
+            margin-bottom: 50px;
         }
 
         .github-stats {
             display: flex;
             gap: 20px;
-            margin-left: auto;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: 2px solid cyan;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
         }
 
         .stat-item {
-            background: rgba(0, 20, 40, 0.6);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border: 1px solid cyan;
-            border-radius: 30px;
             color: cyan;
             font-weight: bold;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px cyan;
         }
 
         .repo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
         }
 
         .repo-card {
-            background: rgba(5, 10, 20, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 25px;
-            transition: all 0.3s;
+            background: rgba(8, 8, 20, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 30px;
+            transition: all 0.4s;
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            animation: cardGlow 3s infinite alternate;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: cardFloat 6s ease-in-out infinite;
+            animation-delay: calc(var(--card-index) * 0.1s);
+        }
+
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .repo-card::before {
             content: '';
             position: absolute;
             top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(45deg, cyan, magenta, cyan);
-            border-radius: 22px;
+            background: linear-gradient(135deg, cyan, magenta, cyan, magenta);
+            border-radius: 32px;
             opacity: 0;
-            transition: 0.3s;
+            transition: 0.4s;
             z-index: -1;
         }
 
+        .repo-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+
         .repo-card:hover::before {
-            opacity: 0.5;
+            opacity: 0.6;
+        }
+
+        .repo-card:hover::after {
+            left: 100%;
         }
 
         .repo-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: cyan;
-            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+            transform: translateY(-20px) scale(1.02);
+            border-color: transparent;
+            box-shadow: 0 30px 60px rgba(0, 255, 255, 0.3);
         }
 
         .repo-name {
             font-family: 'Audiowide', cursive;
-            font-size: 1.4rem;
-            color: cyan;
-            margin-bottom: 10px;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #fff, cyan);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .repo-name i {
-            font-size: 1.2rem;
+            font-size: 2rem;
             color: magenta;
+            filter: drop-shadow(0 0 10px magenta);
         }
 
         .repo-description {
-            color: #bcf;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            font-size: 0.95rem;
+            color: #c0d0ff;
+            margin-bottom: 25px;
+            line-height: 1.7;
+            font-size: 1rem;
+            min-height: 60px;
         }
 
         .repo-meta {
             display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            gap: 25px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            flex-wrap: wrap;
         }
 
         .repo-language {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            background: rgba(0, 255, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 30px;
         }
 
         .lang-dot {
-            width: 12px; height: 12px;
+            width: 14px; height: 14px;
             border-radius: 50%;
-            background: cyan;
-            box-shadow: 0 0 10px cyan;
+            animation: pulse 1.5s infinite;
         }
 
         .repo-stars, .repo-forks {
             display: flex;
             align-items: center;
-            gap: 5px;
-            color: #9cf;
+            gap: 8px;
+            color: #b0c0ff;
+            background: rgba(255, 0, 255, 0.1);
+            padding: 5px 15px;
+            border-radius: 30px;
+        }
+
+        .repo-stars span, .repo-forks span {
+            color: cyan;
         }
 
         .repo-topics {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 15px;
+            gap: 10px;
+            margin: 20px 0;
         }
 
         .topic-tag {
-            background: rgba(0, 255, 255, 0.1);
+            background: rgba(0, 255, 255, 0.08);
             border: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.8rem;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 0.9rem;
             color: cyan;
-            transition: 0.2s;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
         }
 
         .topic-tag:hover {
             background: cyan;
             color: black;
             border-color: cyan;
+            box-shadow: 0 0 20px cyan;
+            transform: scale(1.05);
         }
 
         .repo-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         .repo-date {
-            color: #7aa;
-            font-size: 0.85rem;
+            color: #8a9bb5;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .repo-link {
             color: cyan;
             text-decoration: none;
-            padding: 5px 15px;
-            border: 1px solid cyan;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            transition: 0.2s;
+            padding: 8px 25px;
+            border: 2px solid cyan;
+            border-radius: 40px;
+            font-size: 1rem;
+            transition: 0.3s;
+            letter-spacing: 1px;
         }
 
         .repo-link:hover {
             background: cyan;
             color: black;
+            box-shadow: 0 0 30px cyan;
         }
 
         .github-loading {
             text-align: center;
             padding: 100px;
             color: cyan;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
+            grid-column: 1 / -1;
+        }
+
+        .loading-spinner {
+            width: 80px; height: 80px;
+            border: 4px solid transparent;
+            border-top: 4px solid cyan;
+            border-right: 4px solid magenta;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
         .github-error {
             text-align: center;
-            padding: 50px;
+            padding: 60px;
             color: magenta;
             border: 2px solid magenta;
-            border-radius: 20px;
+            border-radius: 30px;
             background: rgba(255, 0, 255, 0.1);
+            font-size: 1.5rem;
+            backdrop-filter: blur(10px);
+            grid-column: 1 / -1;
         }
 
-        .github-username-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            justify-content: center;
-        }
-
-        .github-username-input input {
-            background: rgba(0, 20, 40, 0.6);
-            border: 1px solid cyan;
-            padding: 12px 20px;
-            border-radius: 30px;
-            color: cyan;
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 1rem;
-            width: 300px;
-        }
-
-        .github-username-input input:focus {
-            outline: none;
-            box-shadow: 0 0 20px cyan;
-        }
-
-        .github-username-input button {
-            background: transparent;
-            border: 1px solid cyan;
-            color: cyan;
-            padding: 12px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-
-        .github-username-input button:hover {
-            background: cyan;
-            color: black;
-            box-shadow: 0 0 30px cyan;
-        }
-
-        /* REST OF SECTIONS */
+        /* Timeline & Cards */
         .timeline-item {
             display: flex;
-            margin-bottom: 40px;
-            gap: 30px;
+            margin-bottom: 50px;
+            gap: 40px;
+            background: rgba(0, 20, 40, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
         .timeline-time {
-            min-width: 150px;
+            min-width: 180px;
             font-family: 'Orbitron', monospace;
             color: magenta;
-            text-shadow: 0 0 10px magenta;
+            text-shadow: 0 0 15px magenta;
             font-weight: bold;
-            text-align: right;
+            font-size: 1.3rem;
         }
 
         .timeline-content {
-            background: rgba(0, 20, 40, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 20px 30px;
-            border-radius: 20px;
-            width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border-left: 4px solid cyan;
+            flex: 1;
+        }
+
+        .timeline-content h3 {
+            color: cyan;
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
 
         .grid-layout {
@@ -677,34 +740,37 @@
         }
 
         .card-quantum {
-            background: rgba(5, 10, 20, 0.7);
-            backdrop-filter: blur(12px);
+            background: rgba(8, 8, 20, 0.8);
+            backdrop-filter: blur(15px);
             border: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 40px 20px;
-            border-radius: 30px;
+            padding: 50px 30px;
+            border-radius: 40px;
             text-align: center;
-            transition: 0.3s;
+            transition: 0.4s;
             position: relative;
             overflow: hidden;
         }
 
         .card-quantum:hover {
+            transform: translateY(-20px);
             border-color: cyan;
-            box-shadow: 0 0 70px cyan;
-            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 0 80px cyan;
         }
 
         .card-icon {
-            font-size: 4rem;
-            filter: drop-shadow(0 0 20px cyan);
+            font-size: 5rem;
+            filter: drop-shadow(0 0 30px cyan);
+            margin-bottom: 20px;
         }
 
         footer {
             text-align: center;
-            padding: 40px;
+            padding: 50px;
             border-top: 1px solid rgba(0,255,255,0.2);
             font-family: 'Orbitron', monospace;
-            color: #7aa;
+            color: #6a8a9a;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
         }
 
         #canvas-bg {
@@ -712,22 +778,31 @@
             width: 100%; height: 100%;
             pointer-events: none;
             z-index: 3;
-            opacity: 0.3;
+            opacity: 0.2;
         }
 
         .hologram-tag {
-            position: fixed; bottom: 20px; right: 20px;
-            color: rgba(0, 255, 255, 0.3);
+            position: fixed; bottom: 30px; right: 30px;
+            color: rgba(0, 255, 255, 0.4);
             font-family: 'Audiowide', cursive;
-            font-size: 12px;
-            letter-spacing: 4px;
+            font-size: 14px;
+            letter-spacing: 5px;
             text-transform: uppercase;
             z-index: 100;
-            transform: rotate(90deg) translateY(50px);
-            backdrop-filter: blur(5px);
-            padding: 5px 15px;
-            border-left: 1px solid cyan;
-            animation: flickerGlow 3s infinite;
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-left: 2px solid cyan;
+            animation: flickerGlow 4s infinite;
+        }
+
+        @keyframes flickerGlow {
+            0%, 100% { opacity: 0.4; text-shadow: 0 0 10px cyan; }
+            50% { opacity: 1; text-shadow: 0 0 30px cyan; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -735,25 +810,26 @@
 
     <!-- ATMOSPHERE -->
     <div class="holo-grid"></div>
-    <div class="energy-aura"></div>
-    <div class="crystal-scan"></div>
-    <div class="vignette-complex"></div>
-    <div class="hologram-tag">⚡ GITHUB QUANTUM LINK ⚡</div>
+    <div class="energy-field" id="energy-field"></div>
+    <div class="floating-crystals"></div>
+    <div class="scanline-enhanced"></div>
+    <div class="hologram-tag">⚡ darkfa1con // QUANTUM NODE ⚡</div>
 
     <!-- BOOT SCREEN -->
     <div id="boot-screen">
         <div class="boot-central">
             <div class="boot-header">
-                <span>⚡ GITHUB INTERFACE v2.0</span>
-                <span>QUANTUM LINK</span>
+                <span>⚡ darkfa1con // GITHUB QUANTUM INTERFACE</span>
+                <span>v3.0</span>
             </div>
             <div class="boot-graph"></div>
             <div id="boot-text"></div>
-            <div style="margin: 30px 0;">
-                <div class="boot-line"><span class="status-pulse"></span> GITHUB API — CONNECTION ESTABLISHED</div>
+            <div style="margin: 40px 0;">
+                <div class="boot-line"><span class="status-pulse"></span> GITHUB API — CONNECTION SECURE</div>
+                <div class="boot-line"><span class="status-pulse"></span> USER: darkfa1con — AUTHENTICATED</div>
             </div>
-            <div style="width:100%; height:4px; background:#111; border-radius:4px; overflow:hidden;">
-                <div class="progress-bar" style="height:100%; width:0%;"></div>
+            <div style="width:100%; height:6px; background:#111; border-radius:6px; overflow:hidden;">
+                <div class="progress-bar" style="height:100%; width:0%; background:linear-gradient(90deg, cyan, magenta);"></div>
             </div>
         </div>
     </div>
@@ -764,13 +840,14 @@
 
     <!-- NAVIGATION -->
     <nav>
-        <div class="logo-neon">MH // GITHUB</div>
+        <div class="logo-neon">darkfa1con //</div>
         <div class="nav-links">
             <a href="#hero">_home</a>
             <a href="#github">_repositories</a>
             <a href="#experience">_logs</a>
+            <a href="#services">_capabilities</a>
         </div>
-        <button id="reboot-quantum" class="quantum-btn">⟲ REBOOT</button>
+        <button id="reboot-quantum" class="quantum-btn">⟲ REINITIALIZE</button>
     </nav>
 
     <main id="main-content">
@@ -778,38 +855,35 @@
         <section id="hero" class="hero">
             <div class="hero-text">
                 <span class="hero-tag">⚡ ROOT ACCESS: GRANTED ⚡</span>
-                <h1>MUHAMMAD<br>HASSNAIN</h1>
-                <p class="hero-desc">CYBERSECURITY ARCHITECT / Preston University. Specializing in neural network defense, quantum-safe cryptography, and open-source development.</p>
+                <h1>DARKFA1CON</h1>
+                <p class="hero-desc">CYBERSECURITY ARCHITECT / Quantum Cryptographer / Open Source Developer. Specializing in neural network defense, zero-day exploitation, and secure system architecture.</p>
                 <div class="magnetic-wrap">
-                    <a href="#github" class="magnetic-btn">⚡ VIEW GITHUB REPOS</a>
+                    <a href="#github" class="magnetic-btn">⚡ ACCESS REPOSITORIES</a>
                 </div>
             </div>
             <div class="hero-visual">
                 <div class="avatar-holo">
                     <div class="avatar-ring"></div>
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Hassnain&backgroundColor=cyan&radius=50" class="avatar-img" alt="avatar">
+                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=darkfa1con&backgroundColor=cyan&radius=50&colors=cyan,blue,purple" class="avatar-img" alt="avatar">
                 </div>
             </div>
         </section>
 
-        <!-- GITHUB REPOSITORIES SECTION (NEW) -->
+        <!-- GITHUB REPOSITORIES SECTION - NO SEARCH -->
         <section id="github">
             <h2>// GITHUB QUANTUM REPOS</h2>
             
             <div class="github-header">
-                <div class="github-username-input">
-                    <input type="text" id="github-username" placeholder="Enter GitHub username" value="HassnainQadeer">
-                    <button id="fetch-repos">⟳ FETCH REPOS</button>
-                </div>
                 <div class="github-stats" id="github-stats" style="display: none;">
-                    <div class="stat-item" id="repo-count">0 repos</div>
+                    <div class="stat-item" id="repo-count">0 repositories</div>
                 </div>
             </div>
 
             <div id="repo-container" class="repo-grid">
                 <div class="github-loading">
-                    <div>🌀 INITIALIZING GITHUB QUANTUM LINK</div>
-                    <div style="font-size: 1rem;">Enter username above to fetch repositories</div>
+                    <div class="loading-spinner"></div>
+                    <div>🌀 INITIALIZING QUANTUM LINK FOR darkfa1con</div>
+                    <div style="font-size: 1.2rem;">FETCHING REPOSITORIES FROM GITHUB MATRIX</div>
                 </div>
             </div>
         </section>
@@ -822,21 +896,21 @@
                     <div class="timeline-time">2021 // ACTIVE</div>
                     <div class="timeline-content">
                         <h3>Preston University Kohat</h3>
-                        <p>Quantum Cybersecurity Research — Cryptography, Neural Networks, Zero-Day exploits.</p>
+                        <p>Quantum Cybersecurity Research — Advanced Cryptography, Neural Networks, Zero-Day Exploits.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-time">2022 // BOUNTY</div>
                     <div class="timeline-content">
-                        <h3>Bug Bounty (Elite)</h3>
-                        <p>Discovered 20+ critical vulnerabilities in global financial platforms. Hall of Fame.</p>
+                        <h3>Elite Bug Bounty Hunter</h3>
+                        <p>Discovered 25+ critical vulnerabilities in Fortune 500 companies. Multiple Hall of Fame inductions.</p>
                     </div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-time">2023 // INTERFACE</div>
                     <div class="timeline-content">
-                        <h3>Network Architect Intern</h3>
-                        <p>Designed AI-driven threat detection system using deep packet inspection.</p>
+                        <h3>Security Architect Intern</h3>
+                        <p>Developed AI-driven threat detection system processing 1M+ packets/sec using deep learning.</p>
                     </div>
                 </div>
             </div>
@@ -849,24 +923,24 @@
                 <div class="card-quantum">
                     <div class="card-icon">⚡</div>
                     <h3 style="color:cyan;">Penetration Testing</h3>
-                    <p style="color:#bcf;">Quantum-grade simulation of cyber attacks. Zero-day emulation.</p>
+                    <p style="color:#bcf;">Advanced quantum-grade simulation of sophisticated cyber attacks. Zero-day emulation.</p>
                 </div>
                 <div class="card-quantum">
                     <div class="card-icon">🧬</div>
                     <h3 style="color:cyan;">Neural Auditing</h3>
-                    <p style="color:#bcf;">AI-powered code & infrastructure analysis. Deep learning vulnerability mapping.</p>
+                    <p style="color:#bcf;">AI-powered code analysis using deep learning. Automated vulnerability mapping.</p>
                 </div>
                 <div class="card-quantum">
                     <div class="card-icon">🌀</div>
                     <h3 style="color:cyan;">Malware Deconstruction</h3>
-                    <p style="color:#bcf;">Reverse engineering of polymorphic malware. Create adaptive vaccines.</p>
+                    <p style="color:#bcf;">Reverse engineering of polymorphic & metamorphic malware. Create adaptive vaccines.</p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>© 2323 MUHAMMAD HASSNAIN — GITHUB QUANTUM INTERFACE // PRESTON LAB</p>
+        <p>© 2324 darkfa1con // QUANTUM SECURITY ARCHITECT // PRESTON LAB</p>
     </footer>
 
     <canvas id="canvas-bg"></canvas>
@@ -907,13 +981,14 @@
             
             const bootMessages = [
                 "> INITIATING QUANTUM CORE...",
-                "> GITHUB API CONNECTION... [OK]",
-                "> LOADING REPOSITORY INTERFACE...",
-                "> CYPHER MODULE v2.0 ACTIVATED",
+                "> GITHUB API CONNECTION... [SECURE]",
+                "> LOADING darkfa1con REPOSITORIES...",
+                "> CYPHER MODULE v3.0 ACTIVATED",
                 "> CONNECTING TO PRESTON LAB...",
                 "> FETCHING USER DATA...",
+                "> DECRYPTING REPOSITORY METADATA...",
                 "> FIREWALL: ACTIVE (BLACK ICE)",
-                "> ROOT ACCESS: SECURED",
+                "> ROOT ACCESS: GRANTED",
                 "> SYSTEM ONLINE."
             ];
 
@@ -959,11 +1034,28 @@
             // ========== CURSOR ==========
             const core = document.querySelector('.cursor-core');
             const ring = document.querySelector('.cursor-energy-ring');
+            
             document.addEventListener('mousemove', (e) => {
                 core.style.left = e.clientX + 'px';
                 core.style.top = e.clientY + 'px';
                 ring.style.left = e.clientX + 'px';
                 ring.style.top = e.clientY + 'px';
+                
+                // Energy field follows mouse
+                const energyField = document.getElementById('energy-field');
+                energyField.style.setProperty('--mouse-x', e.clientX / window.innerWidth * 100 + '%');
+                energyField.style.setProperty('--mouse-y', e.clientY / window.innerHeight * 100 + '%');
+            });
+
+            // Cursor ring size on click
+            document.addEventListener('mousedown', () => {
+                ring.style.width = '100px';
+                ring.style.height = '100px';
+            });
+            
+            document.addEventListener('mouseup', () => {
+                ring.style.width = '80px';
+                ring.style.height = '80px';
             });
 
             // ========== SCROLL REVEAL ==========
@@ -974,9 +1066,7 @@
             }, { threshold: 0.1, rootMargin: '0px' });
             document.querySelectorAll('section').forEach(s => observer.observe(s));
 
-            // ========== GITHUB REPOSITORY FETCHER ==========
-            const usernameInput = document.getElementById('github-username');
-            const fetchBtn = document.getElementById('fetch-repos');
+            // ========== GITHUB REPOSITORY FETCHER (AUTO, NO SEARCH) ==========
             const repoContainer = document.getElementById('repo-container');
             const githubStats = document.getElementById('github-stats');
             const repoCount = document.getElementById('repo-count');
@@ -1001,12 +1091,7 @@
             };
 
             async function fetchGitHubRepos(username) {
-                if (!username) {
-                    repoContainer.innerHTML = '<div class="github-error">⚠️ PLEASE ENTER A GITHUB USERNAME</div>';
-                    return;
-                }
-
-                repoContainer.innerHTML = '<div class="github-loading"><div>🌀 QUANTUM LINK ESTABLISHING...</div><div style="font-size:1rem;">FETCHING REPOSITORIES FROM GITHUB</div></div>';
+                repoContainer.innerHTML = '<div class="github-loading"><div class="loading-spinner"></div><div>🌀 QUANTUM LINK ESTABLISHING...</div><div style="font-size:1.2rem;">FETCHING REPOSITORIES FROM GITHUB MATRIX</div></div>';
                 
                 try {
                     // Fetch repos
@@ -1014,7 +1099,7 @@
                     
                     if (!reposResponse.ok) {
                         if (reposResponse.status === 404) {
-                            throw new Error('USER NOT FOUND');
+                            throw new Error('USER NOT FOUND IN MATRIX');
                         } else {
                             throw new Error(`GITHUB API ERROR: ${reposResponse.status}`);
                         }
@@ -1028,7 +1113,7 @@
                     
                     // Update stats
                     githubStats.style.display = 'flex';
-                    repoCount.textContent = `${repos.length} repos`;
+                    repoCount.textContent = `${repos.length} repositories`;
                     
                     if (repos.length === 0) {
                         repoContainer.innerHTML = '<div class="github-error">📦 NO REPOSITORIES FOUND FOR THIS USER</div>';
@@ -1040,7 +1125,7 @@
                     
                     // Render repos
                     let reposHTML = '';
-                    repos.forEach(repo => {
+                    repos.forEach((repo, index) => {
                         const langColor = langColors[repo.language] || langColors.default;
                         const updated = new Date(repo.updated_at).toLocaleDateString('en-US', { 
                             year: 'numeric', 
@@ -1050,12 +1135,12 @@
                         
                         // Get topics (if any)
                         const topics = repo.topics || [];
-                        const topicsHTML = topics.slice(0, 4).map(topic => 
+                        const topicsHTML = topics.slice(0, 5).map(topic => 
                             `<span class="topic-tag">${topic}</span>`
                         ).join('');
                         
                         reposHTML += `
-                            <div class="repo-card" onclick="window.open('${repo.html_url}', '_blank')">
+                            <div class="repo-card" style="--card-index: ${index}" onclick="window.open('${repo.html_url}', '_blank')">
                                 <div class="repo-name">
                                     <i>📁</i> ${repo.name}
                                 </div>
@@ -1064,7 +1149,7 @@
                                 </div>
                                 <div class="repo-meta">
                                     <div class="repo-language">
-                                        <span class="lang-dot" style="background: ${langColor}; box-shadow: 0 0 10px ${langColor};"></span>
+                                        <span class="lang-dot" style="background: ${langColor}; box-shadow: 0 0 15px ${langColor};"></span>
                                         ${repo.language || 'Unknown'}
                                     </div>
                                     <div class="repo-stars">
@@ -1076,8 +1161,8 @@
                                 </div>
                                 ${topicsHTML ? `<div class="repo-topics">${topicsHTML}</div>` : ''}
                                 <div class="repo-footer">
-                                    <span class="repo-date">📅 ${updated}</span>
-                                    <span class="repo-link">VIEW →</span>
+                                    <span class="repo-date">📅 Last quantum sync: ${updated}</span>
+                                    <span class="repo-link">ACCESS →</span>
                                 </div>
                             </div>
                         `;
@@ -1086,27 +1171,15 @@
                     repoContainer.innerHTML = reposHTML;
                     
                 } catch (error) {
-                    repoContainer.innerHTML = `<div class="github-error">⚠️ ERROR: ${error.message}</div>`;
+                    repoContainer.innerHTML = `<div class="github-error">⚠️ QUANTUM ERROR: ${error.message}</div>`;
                     githubStats.style.display = 'none';
                 }
             }
 
-            // Fetch on button click
-            fetchBtn.addEventListener('click', () => {
-                fetchGitHubRepos(usernameInput.value.trim());
-            });
-
-            // Fetch on Enter key
-            usernameInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    fetchGitHubRepos(usernameInput.value.trim());
-                }
-            });
-
-            // Auto-fetch on load with default username
+            // Auto-fetch on load with darkfa1con
             setTimeout(() => {
-                fetchGitHubRepos('HassnainQadeer');
-            }, 2000); // Delay to let boot screen finish
+                fetchGitHubRepos('darkfa1con');
+            }, 2500); // Delay to let boot screen finish
 
             // ========== CANVAS BACKGROUND ==========
             const canvas = document.getElementById('canvas-bg');
@@ -1122,61 +1195,77 @@
             window.addEventListener('resize', resize);
             resize();
 
+            // Enhanced particle system
             const particles = [];
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 80; i++) {
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    size: Math.random() * 3 + 1
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.2,
+                    size: Math.random() * 3 + 1,
+                    phase: Math.random() * Math.PI * 2
                 });
             }
 
             const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-            const columns = 80;
-            const drops = Array(columns).fill(1);
+            const columns = 100;
+            const drops = Array(columns).fill(1).map(() => Math.random() * 100);
 
             function draw() {
-                ctx.fillStyle = 'rgba(2, 2, 10, 0.15)';
+                ctx.fillStyle = 'rgba(2, 2, 8, 0.1)';
                 ctx.fillRect(0, 0, width, height);
 
-                // Matrix rain
-                ctx.font = '16px monospace';
+                // Matrix rain with gradient
+                ctx.font = '18px monospace';
                 for (let i = 0; i < drops.length; i++) {
                     const char = chars[Math.floor(Math.random() * chars.length)];
-                    ctx.fillStyle = 'rgba(0, 255, 255, 0.25)';
-                    ctx.fillText(char, i * 20, drops[i] * 20);
-                    if (drops[i] * 20 > height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
+                    const gradient = ctx.createLinearGradient(0, drops[i] * 20, 0, drops[i] * 20 + 20);
+                    gradient.addColorStop(0, 'cyan');
+                    gradient.addColorStop(1, 'magenta');
+                    ctx.fillStyle = gradient;
+                    ctx.globalAlpha = 0.2;
+                    ctx.fillText(char, i * 15, drops[i] * 20);
+                    if (drops[i] * 20 > height && Math.random() > 0.99) drops[i] = 0;
+                    drops[i] += 0.5;
                 }
 
-                // Particles
+                // Enhanced particles
+                ctx.globalAlpha = 1;
                 particles.forEach(p => {
                     p.x += p.vx;
                     p.y += p.vy;
+                    p.phase += 0.02;
+                    
                     if (p.x < 0 || p.x > width) p.vx *= -1;
                     if (p.y < 0 || p.y > height) p.vy *= -1;
 
                     ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0, 200, 255, 0.7)';
+                    ctx.arc(p.x, p.y, p.size + Math.sin(p.phase) * 0.5, 0, Math.PI * 2);
+                    
+                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
+                    gradient.addColorStop(0, 'cyan');
+                    gradient.addColorStop(1, 'transparent');
+                    ctx.fillStyle = gradient;
                     ctx.shadowColor = 'cyan';
                     ctx.shadowBlur = 15;
                     ctx.fill();
                 });
-                ctx.shadowBlur = 0;
 
-                // Connections
+                // Draw connections
+                ctx.shadowBlur = 0;
                 for (let a = 0; a < particles.length; a++) {
                     for (let b = a + 1; b < particles.length; b++) {
                         const dx = particles[a].x - particles[b].x;
                         const dy = particles[a].y - particles[b].y;
                         const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 120) {
+                        if (dist < 150) {
                             ctx.beginPath();
-                            ctx.strokeStyle = `rgba(0, 200, 255, ${0.3 - dist/400})`;
-                            ctx.lineWidth = 0.8;
+                            const gradient = ctx.createLinearGradient(particles[a].x, particles[a].y, particles[b].x, particles[b].y);
+                            gradient.addColorStop(0, 'rgba(0, 255, 255, 0.2)');
+                            gradient.addColorStop(1, 'rgba(255, 0, 255, 0.2)');
+                            ctx.strokeStyle = gradient;
+                            ctx.lineWidth = 0.5;
                             ctx.moveTo(particles[a].x, particles[a].y);
                             ctx.lineTo(particles[b].x, particles[b].y);
                             ctx.stroke();
