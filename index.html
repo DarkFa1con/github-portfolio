@@ -3,1279 +3,1567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>darkfa1con // GITHUB QUANTUM INTERFACE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Audiowide&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <title>darkfa1con // QUANTUM INTERFACE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* RESET & GLOBAL - enhanced sci-fi */
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff2d78;
+            --gold: #ffd000;
+            --bg: #050508;
+            --bg2: #080b14;
+            --surface: rgba(8, 12, 24, 0.85);
+            --border: rgba(0, 245, 255, 0.15);
+            --text: #c8ddf0;
+            --muted: #4a6480;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { scroll-behavior: smooth; }
+
         body {
-            background: #0a0a0f;
-            background-image: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.05) 0%, transparent 30%),
-                              radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.05) 0%, transparent 30%);
-            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg);
+            font-family: 'Syne', sans-serif;
+            color: var(--text);
             overflow-x: hidden;
-            color: #e0f0ff;
-            position: relative;
-            min-height: 100vh;
+            cursor: none;
         }
 
-        /* ===== ENHANCED ATMOSPHERE ===== */
-        .holo-grid {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 0, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: 2;
-            animation: gridShift 20s linear infinite;
-        }
-
-        @keyframes gridShift {
-            0% { transform: perspective(1000px) rotateX(0deg) translateZ(0); }
-            50% { transform: perspective(1000px) rotateX(0.5deg) translateZ(20px); }
-            100% { transform: perspective(1000px) rotateX(0deg) translateZ(0); }
-        }
-
-        .energy-field {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-                        rgba(0, 255, 255, 0.1) 0%, 
-                        rgba(255, 0, 255, 0.05) 30%, 
-                        transparent 60%);
-            pointer-events: none;
-            z-index: 3;
-            mix-blend-mode: screen;
-        }
-
-        .floating-crystals {
-            position: fixed;
-            width: 100%; height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><polygon points="50,10 90,30 90,70 50,90 10,70 10,30" fill="none" stroke="cyan" stroke-width="0.5"/></svg>');
-            background-size: 100px 100px;
-            pointer-events: none;
-            z-index: 1;
-            animation: rotateCrystals 200s linear infinite;
-        }
-
-        @keyframes rotateCrystals {
-            0% { transform: rotate(0deg) scale(1); }
-            100% { transform: rotate(360deg) scale(1.5); }
-        }
-
-        .scanline-enhanced {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, 
-                transparent 0%, 
-                rgba(0, 255, 255, 0.02) 50%, 
-                transparent 100%);
-            background-size: 100% 8px;
-            pointer-events: none;
-            z-index: 7;
-            animation: scanMove 8s linear infinite;
-        }
-
-        /* ===== BOOT SCREEN ===== */
-        #boot-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
-            background: #050510;
-            z-index: 9999;
-            display: flex; 
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Syncopate', monospace;
-            backdrop-filter: blur(20px);
-            transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            box-shadow: 0 0 100px rgba(0, 255, 255, 0.3);
-        }
-
-        .boot-central {
-            max-width: 900px;
-            width: 90%;
-            padding: 40px;
-            border: 2px solid #00ffff;
-            box-shadow: 0 0 50px #00ffff, inset 0 0 30px rgba(0,255,255,0.3);
-            background: rgba(0, 10, 20, 0.8);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .boot-central::before {
+        /* ── NOISE OVERLAY ── */
+        body::before {
             content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, cyan, magenta, cyan);
-            animation: rotate 4s linear infinite;
-            opacity: 0.1;
-        }
-
-        .boot-header {
-            display: flex; justify-content: space-between;
-            color: #fff; margin-bottom: 30px;
-            font-family: 'Audiowide', cursive;
-            border-bottom: 2px solid rgba(0, 255, 255, 0.5);
-            padding-bottom: 15px;
-            text-shadow: 0 0 10px cyan;
-        }
-
-        .boot-graph {
-            height: 2px;
-            background: linear-gradient(90deg, transparent, cyan, magenta, cyan, transparent);
-            width: 100%;
-            margin: 30px 0;
-            animation: bootPulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes bootPulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .boot-line {
-            font-size: 1.1rem;
-            margin: 15px 0;
-            color: #b0ffff;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: 'Orbitron', monospace;
-            text-shadow: 0 0 5px cyan;
-            transform: translateX(0);
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        /* ===== CURSOR ===== */
-        .cursor-energy-ring {
             position: fixed;
-            width: 80px; height: 80px;
-            border: 2px solid rgba(0, 255, 255, 0.4);
-            border-radius: 50%;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none;
             z-index: 9999;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 40px cyan, inset 0 0 20px cyan;
-            mix-blend-mode: screen;
-            transition: width 0.2s, height 0.2s;
-        }
-
-        .cursor-core {
-            position: fixed;
-            width: 12px; height: 12px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 30px cyan, 0 0 60px magenta;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-        }
-
-        /* ===== NAVIGATION ===== */
-        nav {
-            position: fixed;
-            top: 20px; left: 50%;
-            transform: translateX(-50%);
-            width: 95%;
-            max-width: 1400px;
-            padding: 15px 40px;
-            background: rgba(10, 10, 25, 0.7);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 60px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.2);
-        }
-
-        .logo-neon {
-            font-family: 'Audiowide', cursive;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #00ffff, #ff00ff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 20px cyan);
-            letter-spacing: 3px;
-        }
-
-        .nav-links {
-            display: flex; gap: 50px;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 1rem;
-            position: relative;
-            padding: 5px 0;
-            transition: 0.3s;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
-            background: linear-gradient(90deg, cyan, magenta);
-            box-shadow: 0 0 15px cyan;
-            transition: 0.3s;
-        }
-
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a:hover { text-shadow: 0 0 15px cyan; }
-
-        .quantum-btn {
-            background: transparent;
-            border: 2px solid cyan;
-            color: cyan;
-            padding: 10px 30px;
-            border-radius: 40px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.3s;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .quantum-btn::before {
-            content: '';
-            position: absolute; top: 50%; left: 50%;
-            width: 0; height: 0;
-            background: cyan;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            transition: width 0.4s, height 0.4s;
-            z-index: -1;
-        }
-
-        .quantum-btn:hover::before {
-            width: 300px; height: 300px;
-        }
-
-        .quantum-btn:hover {
-            color: black;
-            border-color: white;
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        main {
-            position: relative;
-            z-index: 50;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 150px 40px 60px;
-        }
-
-        section {
-            margin-bottom: 200px;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: 1s cubic-bezier(0.2, 0.9, 0.3, 1);
-        }
-
-        section.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        h2 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 3.5rem;
-            margin-bottom: 60px;
-            background: linear-gradient(135deg, #fff, cyan, magenta);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            border-bottom: 3px solid transparent;
-            border-image: linear-gradient(90deg, cyan, magenta);
-            border-image-slice: 1;
-            padding-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            min-height: 85vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 50px;
-            perspective: 2000px;
-        }
-
-        .hero-text { flex: 1; }
-
-        .hero-tag {
-            display: inline-block;
-            padding: 12px 30px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 2px solid cyan;
-            color: cyan;
-            font-weight: bold;
-            letter-spacing: 4px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 40px rgba(0,255,255,0.3);
-            border-radius: 40px;
-            font-size: 1.1rem;
-        }
-
-        .hero h1 {
-            font-size: 6rem;
-            font-family: 'Syncopate', sans-serif;
-            background: linear-gradient(135deg, #fff, cyan, #ff88ff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 50px cyan);
-            letter-spacing: 5px;
-        }
-
-        .hero-desc {
-            font-size: 1.3rem;
-            color: #d0e0ff;
-            max-width: 600px;
-            margin-bottom: 50px;
-            border-left: 4px solid cyan;
-            padding-left: 30px;
-            line-height: 1.8;
-        }
-
-        .magnetic-btn {
-            display: inline-block;
-            padding: 18px 50px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid cyan;
-            color: cyan;
-            text-decoration: none;
-            font-weight: bold;
-            letter-spacing: 3px;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            font-size: 1.2rem;
-        }
-
-        .magnetic-btn::before {
-            content: '';
-            position: absolute; top: 50%; left: 50%;
-            width: 0; height: 0;
-            background: linear-gradient(135deg, cyan, magenta);
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            transition: width 0.5s, height 0.5s;
-            z-index: -1;
-        }
-
-        .magnetic-btn:hover::before {
-            width: 400px; height: 400px;
-        }
-
-        .magnetic-btn:hover {
-            color: black;
-            border-color: white;
-            box-shadow: 0 0 50px cyan;
-        }
-
-        /* AVATAR */
-        .hero-visual {
-            flex: 0 0 450px;
-            height: 450px;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .avatar-holo {
-            width: 380px; height: 380px;
-            position: relative;
-            animation: float3d 10s ease-in-out infinite;
-            transform-style: preserve-3d;
-        }
-
-        @keyframes float3d {
-            0%, 100% { transform: rotateY(0deg) rotateX(5deg) translateZ(0); }
-            50% { transform: rotateY(20deg) rotateX(-5deg) translateZ(40px); }
-        }
-
-        .avatar-ring {
-            position: absolute; top: 50%; left: 50%;
-            width: 100%; height: 100%;
-            border: 4px solid rgba(0, 255, 255, 0.6);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 80px cyan, inset 0 0 40px cyan;
-        }
-
-        .avatar-ring::before, .avatar-ring::after {
-            content: '';
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 110%; height: 110%;
-            border: 2px dashed magenta;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            animation: spin 15s linear infinite;
-        }
-
-        .avatar-ring::after {
-            width: 120%; height: 120%;
-            border-color: cyan;
-            animation-direction: reverse;
-            animation-duration: 20s;
-        }
-
-        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-
-        .avatar-img {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            filter: grayscale(0.1) contrast(1.4) drop-shadow(0 0 30px cyan);
-            border: 3px solid cyan;
-        }
-
-        /* ===== GITHUB SECTION - ENHANCED (NO SEARCH) ===== */
-        .github-header {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 50px;
-        }
-
-        .github-stats {
-            display: flex;
-            gap: 20px;
-            background: rgba(0, 255, 255, 0.1);
-            padding: 15px 40px;
-            border-radius: 50px;
-            border: 2px solid cyan;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-        }
-
-        .stat-item {
-            color: cyan;
-            font-weight: bold;
-            font-size: 1.3rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px cyan;
-        }
-
-        .repo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .repo-card {
-            background: rgba(8, 8, 20, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            border-radius: 30px;
-            padding: 30px;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            animation: cardFloat 6s ease-in-out infinite;
-            animation-delay: calc(var(--card-index) * 0.1s);
-        }
-
-        @keyframes cardFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .repo-card::before {
-            content: '';
-            position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
-            background: linear-gradient(135deg, cyan, magenta, cyan, magenta);
-            border-radius: 32px;
-            opacity: 0;
-            transition: 0.4s;
-            z-index: -1;
-        }
-
-        .repo-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: 0.5s;
-        }
-
-        .repo-card:hover::before {
             opacity: 0.6;
         }
 
-        .repo-card:hover::after {
-            left: 100%;
+        /* ── GRID ── */
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,245,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,245,255,0.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .repo-card:hover {
-            transform: translateY(-20px) scale(1.02);
-            border-color: transparent;
-            box-shadow: 0 30px 60px rgba(0, 255, 255, 0.3);
+        /* ── GLOW ORBS ── */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
         }
+        .orb-1 { width: 600px; height: 600px; background: rgba(0,245,255,0.07); top: -200px; left: -200px; animation: driftOrb1 20s ease-in-out infinite; }
+        .orb-2 { width: 500px; height: 500px; background: rgba(255,45,120,0.06); bottom: -150px; right: -150px; animation: driftOrb2 25s ease-in-out infinite; }
+        .orb-3 { width: 400px; height: 400px; background: rgba(255,208,0,0.04); top: 40%; left: 50%; transform: translate(-50%,-50%); animation: driftOrb3 18s ease-in-out infinite; }
 
-        .repo-name {
-            font-family: 'Audiowide', cursive;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #fff, cyan);
+        @keyframes driftOrb1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(100px,80px)} }
+        @keyframes driftOrb2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-80px,-60px)} }
+        @keyframes driftOrb3 { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.3)} }
+
+        /* ── CURSOR ── */
+        #cursor {
+            position: fixed;
+            width: 20px; height: 20px;
+            border: 2px solid var(--cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100000;
+            transform: translate(-50%,-50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        #cursor-dot {
+            position: fixed;
+            width: 4px; height: 4px;
+            background: var(--cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100001;
+            transform: translate(-50%,-50%);
+        }
+        body:has(a:hover) #cursor,
+        body:has(button:hover) #cursor { width: 50px; height: 50px; background: rgba(0,245,255,0.1); }
+
+        /* ── BOOT SCREEN ── */
+        #boot {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 50000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        #boot.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .boot-box {
+            width: min(640px, 92vw);
+            border: 1px solid rgba(0,245,255,0.4);
+            background: rgba(5,5,15,0.95);
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 0 80px rgba(0,245,255,0.15), inset 0 0 40px rgba(0,245,255,0.03);
+        }
+        .boot-box::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(135deg, var(--cyan), transparent 40%, transparent 60%, var(--magenta));
+            z-index: -1;
+            opacity: 0.5;
+        }
+        .boot-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--cyan);
+            letter-spacing: 6px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+        .boot-log {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.82rem;
+            color: #5a8a70;
+            line-height: 2.2;
+            min-height: 220px;
+        }
+        .boot-log .ok { color: var(--cyan); }
+        .boot-log .warn { color: var(--gold); }
+        .boot-progress-wrap {
+            margin-top: 30px;
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .boot-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            width: 0%;
+            transition: width 0.2s ease;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+        .boot-corner {
+            position: absolute;
+            width: 12px; height: 12px;
+            border-color: var(--cyan);
+            border-style: solid;
+        }
+        .boot-corner.tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+        .boot-corner.tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+        .boot-corner.bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+        .boot-corner.br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 60px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5,5,12,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
+        }
+        .nav-links {
             display: flex;
-            align-items: center;
-            gap: 10px;
+            gap: 40px;
+            list-style: none;
         }
-
-        .repo-name i {
-            font-size: 2rem;
-            color: magenta;
-            filter: drop-shadow(0 0 10px magenta);
+        .nav-links a {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            position: relative;
         }
-
-        .repo-description {
-            color: #c0d0ff;
-            margin-bottom: 25px;
-            line-height: 1.7;
-            font-size: 1rem;
-            min-height: 60px;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--cyan);
+            transition: width 0.3s;
         }
-
-        .repo-meta {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 20px;
-            font-size: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .repo-language {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 255, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 30px;
-        }
-
-        .lang-dot {
-            width: 14px; height: 14px;
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
-        .repo-stars, .repo-forks {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #b0c0ff;
-            background: rgba(255, 0, 255, 0.1);
-            padding: 5px 15px;
-            border-radius: 30px;
-        }
-
-        .repo-stars span, .repo-forks span {
-            color: cyan;
-        }
-
-        .repo-topics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .topic-tag {
-            background: rgba(0, 255, 255, 0.08);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            color: cyan;
+        .nav-links a:hover { color: var(--cyan); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-reinit {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--bg);
+            background: var(--cyan);
+            border: none;
+            padding: 8px 22px;
+            cursor: none;
             transition: 0.3s;
-            backdrop-filter: blur(5px);
+            text-transform: uppercase;
+        }
+        .nav-reinit:hover { background: var(--magenta); }
+        .nav-sound {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            background: transparent;
+            border: 1px solid rgba(0,245,255,0.3);
+            padding: 8px 16px;
+            cursor: none;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .nav-sound:hover { border-color: var(--cyan); background: rgba(0,245,255,0.08); }
+        .nav-sound.muted { color: var(--muted); border-color: var(--border); }
+
+        /* ── MAIN ── */
+        main {
+            position: relative;
+            z-index: 10;
+            padding-top: 70px;
         }
 
-        .topic-tag:hover {
-            background: cyan;
-            color: black;
-            border-color: cyan;
-            box-shadow: 0 0 20px cyan;
-            transform: scale(1.05);
-        }
-
-        .repo-footer {
-            display: flex;
-            justify-content: space-between;
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 0;
             align-items: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(0, 255, 255, 0.2);
+            padding: 0 60px;
+            position: relative;
+        }
+        #hero::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, var(--cyan), transparent);
+            opacity: 0.3;
         }
 
-        .repo-date {
-            color: #8a9bb5;
-            font-size: 0.9rem;
+        .hero-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 30px; height: 1px;
+            background: var(--cyan);
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 12vw, 11rem);
+            line-height: 0.9;
+            letter-spacing: 6px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .hero h1 span {
+            display: block;
+            -webkit-text-stroke: 1px rgba(0,245,255,0.5);
+            color: transparent;
+        }
+        .hero-sub {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--magenta);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+        }
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.8;
+            border-left: 2px solid var(--border);
+            padding-left: 20px;
+            margin-bottom: 50px;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--bg);
+            background: var(--cyan);
+            text-decoration: none;
+            padding: 14px 36px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--magenta);
+            transform: translateX(-101%);
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .hero-cta:hover::before { transform: translateX(0); }
+        .hero-cta span { position: relative; z-index: 1; }
+
+        /* Hero Visual */
+        .hero-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+        }
+        .avatar-frame {
+            position: relative;
+            width: 320px; height: 320px;
+        }
+        .avatar-frame img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 2px;
+            filter: contrast(1.2) saturate(1.3);
+            display: block;
+        }
+        /* Clip diagonal corner */
+        .avatar-frame::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid var(--cyan);
+            pointer-events: none;
+            box-shadow: 0 0 40px rgba(0,245,255,0.2), inset 0 0 40px rgba(0,245,255,0.05);
+        }
+        .avatar-scan {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            animation: scan 4s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .avatar-corner {
+            position: absolute;
+            width: 16px; height: 16px;
+            border-color: var(--magenta);
+            border-style: solid;
+        }
+        .avatar-corner.tl { top: -4px; left: -4px; border-width: 2px 0 0 2px; }
+        .avatar-corner.tr { top: -4px; right: -4px; border-width: 2px 2px 0 0; }
+        .avatar-corner.bl { bottom: -4px; left: -4px; border-width: 0 0 2px 2px; }
+        .avatar-corner.br { bottom: -4px; right: -4px; border-width: 0 2px 2px 0; }
+
+        .avatar-data {
+            position: absolute;
+            right: -130px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .data-item {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--muted);
+            border-left: 2px solid var(--border);
+            padding-left: 10px;
+        }
+        .data-item strong { display: block; color: var(--cyan); font-size: 0.8rem; }
+
+        /* ── SECTION WRAPPER ── */
+        .section {
+            padding: 120px 60px;
+            position: relative;
+        }
+
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 4px;
+            color: var(--magenta);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            letter-spacing: 4px;
+            color: #fff;
+            margin-bottom: 60px;
+            line-height: 1;
+        }
+        .section-title em {
+            font-style: normal;
+            -webkit-text-stroke: 1px rgba(0,245,255,0.5);
+            color: transparent;
+        }
+
+        /* ── GITHUB SECTION ── */
+        .github-meta {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+        .meta-chip {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            background: rgba(0,245,255,0.04);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .meta-chip .dot {
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--cyan);
+            animation: blink 2s ease-in-out infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2px;
+        }
+
+        .repo-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 28px;
+            cursor: none;
+            transition: border-color 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 0;
+            background: linear-gradient(to bottom, var(--cyan), var(--magenta));
+            transition: height 0.4s ease;
+        }
+        .repo-card:hover {
+            border-color: rgba(0,245,255,0.3);
+            background: rgba(0,245,255,0.04);
+        }
+        .repo-card:hover::before { height: 100%; }
+
+        .repo-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .repo-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            color: #fff;
+            font-weight: 700;
+            word-break: break-all;
+        }
+        .repo-icon {
+            width: 28px; height: 28px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+
+        .repo-desc {
+            font-size: 0.85rem;
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            min-height: 50px;
+        }
+
+        .repo-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .repo-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 1px;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            padding: 3px 10px;
+            text-transform: lowercase;
+            transition: 0.2s;
+        }
+        .repo-tag:hover { color: var(--cyan); border-color: var(--cyan); }
+
+        .repo-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .repo-stats {
+            display: flex;
+            gap: 16px;
+        }
+        .repo-stat {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
             display: flex;
             align-items: center;
             gap: 5px;
         }
-
+        .repo-stat .lang-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
         .repo-link {
-            color: cyan;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--cyan);
             text-decoration: none;
-            padding: 8px 25px;
-            border: 2px solid cyan;
-            border-radius: 40px;
-            font-size: 1rem;
-            transition: 0.3s;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid rgba(0,245,255,0.3);
+            padding: 5px 14px;
+            transition: 0.2s;
         }
+        .repo-link:hover { background: var(--cyan); color: var(--bg); }
 
-        .repo-link:hover {
-            background: cyan;
-            color: black;
-            box-shadow: 0 0 30px cyan;
-        }
-
-        .github-loading {
-            text-align: center;
-            padding: 100px;
-            color: cyan;
-            font-size: 1.8rem;
+        /* Loading / Error states */
+        .state-box {
+            grid-column: 1 / -1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 30px;
-            grid-column: 1 / -1;
+            justify-content: center;
+            padding: 80px;
+            gap: 20px;
+            border: 1px solid var(--border);
         }
-
-        .loading-spinner {
-            width: 80px; height: 80px;
-            border: 4px solid transparent;
-            border-top: 4px solid cyan;
-            border-right: 4px solid magenta;
+        .spinner {
+            width: 40px; height: 40px;
+            border: 2px solid transparent;
+            border-top-color: var(--cyan);
+            border-right-color: var(--magenta);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .state-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: var(--muted);
+            text-transform: uppercase;
         }
 
-        .github-error {
-            text-align: center;
-            padding: 60px;
-            color: magenta;
-            border: 2px solid magenta;
-            border-radius: 30px;
-            background: rgba(255, 0, 255, 0.1);
-            font-size: 1.5rem;
-            backdrop-filter: blur(10px);
-            grid-column: 1 / -1;
+        /* ── TIMELINE ── */
+        .timeline { position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--cyan), var(--magenta), transparent);
         }
-
-        /* Timeline & Cards */
-        .timeline-item {
-            display: flex;
-            margin-bottom: 50px;
-            gap: 40px;
-            background: rgba(0, 20, 40, 0.5);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 30px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-        }
-
-        .timeline-time {
-            min-width: 180px;
-            font-family: 'Orbitron', monospace;
-            color: magenta;
-            text-shadow: 0 0 15px magenta;
-            font-weight: bold;
-            font-size: 1.3rem;
-        }
-
-        .timeline-content {
-            flex: 1;
-        }
-
-        .timeline-content h3 {
-            color: cyan;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .grid-layout {
+        .tl-item {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: 160px 1fr;
+            gap: 40px;
+            padding: 0 0 60px 0;
+            position: relative;
+        }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -4px; top: 6px;
+            width: 9px; height: 9px;
+            background: var(--cyan);
+            border: 2px solid var(--bg);
+            box-shadow: 0 0 15px var(--cyan);
+        }
+        .tl-year {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            color: var(--magenta);
+            padding-left: 20px;
+            padding-top: 4px;
+        }
+        .tl-content {
+            border: 1px solid var(--border);
+            padding: 24px;
+            background: var(--surface);
+            transition: border-color 0.3s;
+        }
+        .tl-content:hover { border-color: rgba(0,245,255,0.3); }
+        .tl-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .tl-desc {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.7;
         }
 
-        .card-quantum {
-            background: rgba(8, 8, 20, 0.8);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            padding: 50px 30px;
-            border-radius: 40px;
-            text-align: center;
-            transition: 0.4s;
+        /* ── CAPABILITIES ── */
+        .cap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+        }
+        .cap-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 40px 30px;
+            transition: 0.3s;
             position: relative;
             overflow: hidden;
         }
-
-        .card-quantum:hover {
-            transform: translateY(-20px);
-            border-color: cyan;
-            box-shadow: 0 0 80px cyan;
+        .cap-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(0,245,255,0.06), transparent 60%);
+            opacity: 0;
+            transition: 0.3s;
         }
-
-        .card-icon {
-            font-size: 5rem;
-            filter: drop-shadow(0 0 30px cyan);
-            margin-bottom: 20px;
+        .cap-card:hover { border-color: rgba(0,245,255,0.3); }
+        .cap-card:hover::after { opacity: 1; }
+        .cap-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            color: rgba(0,245,255,0.08);
+            line-height: 1;
+            margin-bottom: 16px;
         }
-
-        footer {
-            text-align: center;
-            padding: 50px;
-            border-top: 1px solid rgba(0,255,255,0.2);
-            font-family: 'Orbitron', monospace;
-            color: #6a8a9a;
+        .cap-title {
             font-size: 1.1rem;
-            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--cyan);
+            margin-bottom: 12px;
+        }
+        .cap-desc {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.7;
         }
 
-        #canvas-bg {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 3;
-            opacity: 0.2;
-        }
-
-        .hologram-tag {
-            position: fixed; bottom: 30px; right: 30px;
-            color: rgba(0, 255, 255, 0.4);
-            font-family: 'Audiowide', cursive;
-            font-size: 14px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            z-index: 100;
+        /* ── STATUS BAR ── */
+        .status-bar {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 28px;
+            background: rgba(0,245,255,0.08);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 30px;
+            z-index: 1000;
             backdrop-filter: blur(10px);
-            padding: 8px 20px;
-            border-left: 2px solid cyan;
-            animation: flickerGlow 4s infinite;
+        }
+        .status-item {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-item .ok { color: var(--cyan); }
+        .status-sep { width: 1px; height: 14px; background: var(--border); }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 40px 60px 60px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--muted);
+        }
+        .footer-copy {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--muted);
         }
 
-        @keyframes flickerGlow {
-            0%, 100% { opacity: 0.4; text-shadow: 0 0 10px cyan; }
-            50% { opacity: 1; text-shadow: 0 0 30px cyan; }
+        /* ── SCROLL REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            #hero { grid-template-columns: 1fr; padding: 80px 30px 60px; }
+            .hero-visual { display: none; }
+            .section { padding: 80px 30px; }
+            nav { padding: 0 30px; }
+            .cap-grid { grid-template-columns: 1fr; }
+            .tl-item { grid-template-columns: 1fr; gap: 10px; }
+            footer { flex-direction: column; gap: 16px; padding: 30px; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ATMOSPHERE -->
-    <div class="holo-grid"></div>
-    <div class="energy-field" id="energy-field"></div>
-    <div class="floating-crystals"></div>
-    <div class="scanline-enhanced"></div>
-    <div class="hologram-tag">⚡ darkfa1con // QUANTUM NODE ⚡</div>
+<div class="grid-overlay"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-    <!-- BOOT SCREEN -->
-    <div id="boot-screen">
-        <div class="boot-central">
-            <div class="boot-header">
-                <span>⚡ darkfa1con // GITHUB QUANTUM INTERFACE</span>
-                <span>v3.0</span>
-            </div>
-            <div class="boot-graph"></div>
-            <div id="boot-text"></div>
-            <div style="margin: 40px 0;">
-                <div class="boot-line"><span class="status-pulse"></span> GITHUB API — CONNECTION SECURE</div>
-                <div class="boot-line"><span class="status-pulse"></span> USER: darkfa1con — AUTHENTICATED</div>
-            </div>
-            <div style="width:100%; height:6px; background:#111; border-radius:6px; overflow:hidden;">
-                <div class="progress-bar" style="height:100%; width:0%; background:linear-gradient(90deg, cyan, magenta);"></div>
-            </div>
+<!-- CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-dot"></div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+    <div class="status-item"><span class="ok">●</span> SYSTEM ONLINE</div>
+    <div class="status-sep"></div>
+    <div class="status-item">USER: <span class="ok">darkfa1con</span></div>
+    <div class="status-sep"></div>
+    <div class="status-item">GITHUB API: <span class="ok">CONNECTED</span></div>
+    <div class="status-sep"></div>
+    <div class="status-item" id="clock">--:--:--</div>
+    <div class="status-sep"></div>
+    <div class="status-item">QUANTUM NODE: <span class="ok">ACTIVE</span></div>
+</div>
+
+<!-- BOOT -->
+<div id="boot">
+    <div class="boot-box">
+        <div class="boot-corner tl"></div>
+        <div class="boot-corner tr"></div>
+        <div class="boot-corner bl"></div>
+        <div class="boot-corner br"></div>
+        <div class="boot-title">DARKFA1CON // QUANTUM INTERFACE</div>
+        <div class="boot-log" id="boot-log"></div>
+        <div class="boot-progress-wrap">
+            <div class="boot-progress-bar" id="boot-progress"></div>
         </div>
     </div>
+</div>
 
-    <!-- CURSOR -->
-    <div class="cursor-core"></div>
-    <div class="cursor-energy-ring"></div>
+<!-- NAV -->
+<nav>
+    <div class="nav-logo">darkfa1con //</div>
+    <ul class="nav-links">
+        <li><a href="#hero">home</a></li>
+        <li><a href="#github">repos</a></li>
+        <li><a href="#experience">logs</a></li>
+        <li><a href="#capabilities">capabilities</a></li>
+    </ul>
+    <div style="display:flex;gap:10px;align-items:center">
+        <button class="nav-sound" id="sound-btn" title="Toggle Sound">♪ SFX: ON</button>
+        <button class="nav-reinit" id="reinit-btn">⟲ REINIT</button>
+    </div>
+</nav>
 
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="logo-neon">darkfa1con //</div>
-        <div class="nav-links">
-            <a href="#hero">_home</a>
-            <a href="#github">_repositories</a>
-            <a href="#experience">_logs</a>
-            <a href="#services">_capabilities</a>
+<main>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-text">
+            <div class="hero-eyebrow">Root Access Granted</div>
+            <h1>DARK<span>FA1CON</span></h1>
+            <div class="hero-sub">// Cybersecurity Architect &amp; Open Source Developer</div>
+            <p class="hero-desc">Specializing in neural network defense, zero-day exploitation, and secure system architecture. Quantum-grade security for a post-digital world.</p>
+            <a href="#github" class="hero-cta"><span>⚡ Access Repositories</span></a>
         </div>
-        <button id="reboot-quantum" class="quantum-btn">⟲ REINITIALIZE</button>
-    </nav>
+        <div class="hero-visual">
+            <div class="avatar-frame">
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=darkfa1con&backgroundColor=0a0a1a&radius=0" alt="darkfa1con">
+                <div class="avatar-scan"></div>
+                <div class="avatar-corner tl"></div>
+                <div class="avatar-corner tr"></div>
+                <div class="avatar-corner bl"></div>
+                <div class="avatar-corner br"></div>
+            </div>
+            <div class="avatar-data">
+                <div class="data-item"><strong>STATUS</strong>ACTIVE</div>
+                <div class="data-item"><strong>CLEARANCE</strong>ROOT</div>
+                <div class="data-item"><strong>NODE</strong>QUANTUM</div>
+                <div class="data-item"><strong>LAB</strong>PRESTON</div>
+            </div>
+        </div>
+    </section>
 
-    <main id="main-content">
-        <!-- HERO -->
-        <section id="hero" class="hero">
-            <div class="hero-text">
-                <span class="hero-tag">⚡ ROOT ACCESS: GRANTED ⚡</span>
-                <h1>DARKFA1CON</h1>
-                <p class="hero-desc">CYBERSECURITY ARCHITECT / Quantum Cryptographer / Open Source Developer. Specializing in neural network defense, zero-day exploitation, and secure system architecture.</p>
-                <div class="magnetic-wrap">
-                    <a href="#github" class="magnetic-btn">⚡ ACCESS REPOSITORIES</a>
+    <!-- GITHUB -->
+    <section id="github" class="section reveal">
+        <div class="section-label">02 // repositories</div>
+        <div class="section-title">GitHub <em>Matrix</em></div>
+        <div class="github-meta" id="github-meta" style="display:none">
+            <div class="meta-chip"><span class="dot"></span> <span id="stat-repos">0 repos</span></div>
+            <div class="meta-chip"><span class="dot"></span> <span id="stat-stars">0 stars</span></div>
+        </div>
+        <div class="repo-grid" id="repo-grid">
+            <div class="state-box">
+                <div class="spinner"></div>
+                <div class="state-label">Establishing quantum link...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section reveal">
+        <div class="section-label">03 // mission log</div>
+        <div class="section-title">Field <em>Ops</em></div>
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-year">2021 — ACTIVE</div>
+                <div class="tl-content">
+                    <div class="tl-title">Preston University Kohat</div>
+                    <div class="tl-desc">Quantum Cybersecurity Research — Advanced Cryptography, Neural Networks, Zero-Day Exploits. Pushing the boundary between theoretical security and active threat response.</div>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="avatar-holo">
-                    <div class="avatar-ring"></div>
-                    <img src="https://api.dicebear.com/7.x/bottts/svg?seed=darkfa1con&backgroundColor=cyan&radius=50&colors=cyan,blue,purple" class="avatar-img" alt="avatar">
+            <div class="tl-item">
+                <div class="tl-year">2022 — BOUNTY</div>
+                <div class="tl-content">
+                    <div class="tl-title">Elite Bug Bounty Hunter</div>
+                    <div class="tl-desc">Discovered 25+ critical vulnerabilities in Fortune 500 companies. Multiple Hall of Fame inductions. Responsible disclosure at scale.</div>
                 </div>
             </div>
-        </section>
-
-        <!-- GITHUB REPOSITORIES SECTION - NO SEARCH -->
-        <section id="github">
-            <h2>// GITHUB QUANTUM REPOS</h2>
-            
-            <div class="github-header">
-                <div class="github-stats" id="github-stats" style="display: none;">
-                    <div class="stat-item" id="repo-count">0 repositories</div>
+            <div class="tl-item">
+                <div class="tl-year">2023 — INTERFACE</div>
+                <div class="tl-content">
+                    <div class="tl-title">Security Architect Intern</div>
+                    <div class="tl-desc">Developed AI-driven threat detection system processing 1M+ packets/sec using deep learning models trained on adversarial datasets.</div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div id="repo-container" class="repo-grid">
-                <div class="github-loading">
-                    <div class="loading-spinner"></div>
-                    <div>🌀 INITIALIZING QUANTUM LINK FOR darkfa1con</div>
-                    <div style="font-size: 1.2rem;">FETCHING REPOSITORIES FROM GITHUB MATRIX</div>
-                </div>
+    <!-- CAPABILITIES -->
+    <section id="capabilities" class="section reveal">
+        <div class="section-label">04 // capabilities</div>
+        <div class="section-title">Core <em>Systems</em></div>
+        <div class="cap-grid">
+            <div class="cap-card">
+                <div class="cap-num">01</div>
+                <div class="cap-title">Penetration Testing</div>
+                <div class="cap-desc">Quantum-grade simulation of sophisticated cyber attacks. Full kill-chain emulation from reconnaissance through post-exploitation.</div>
             </div>
-        </section>
-
-        <!-- TIMELINE -->
-        <section id="experience">
-            <h2># MISSION LOG</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-time">2021 // ACTIVE</div>
-                    <div class="timeline-content">
-                        <h3>Preston University Kohat</h3>
-                        <p>Quantum Cybersecurity Research — Advanced Cryptography, Neural Networks, Zero-Day Exploits.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">2022 // BOUNTY</div>
-                    <div class="timeline-content">
-                        <h3>Elite Bug Bounty Hunter</h3>
-                        <p>Discovered 25+ critical vulnerabilities in Fortune 500 companies. Multiple Hall of Fame inductions.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-time">2023 // INTERFACE</div>
-                    <div class="timeline-content">
-                        <h3>Security Architect Intern</h3>
-                        <p>Developed AI-driven threat detection system processing 1M+ packets/sec using deep learning.</p>
-                    </div>
-                </div>
+            <div class="cap-card">
+                <div class="cap-num">02</div>
+                <div class="cap-title">Neural Auditing</div>
+                <div class="cap-desc">AI-powered code analysis using deep learning. Automated vulnerability mapping with sub-millisecond detection latency.</div>
             </div>
-        </section>
-
-        <!-- SERVICES -->
-        <section id="services">
-            <h2>// CAPABILITIES</h2>
-            <div class="grid-layout">
-                <div class="card-quantum">
-                    <div class="card-icon">⚡</div>
-                    <h3 style="color:cyan;">Penetration Testing</h3>
-                    <p style="color:#bcf;">Advanced quantum-grade simulation of sophisticated cyber attacks. Zero-day emulation.</p>
-                </div>
-                <div class="card-quantum">
-                    <div class="card-icon">🧬</div>
-                    <h3 style="color:cyan;">Neural Auditing</h3>
-                    <p style="color:#bcf;">AI-powered code analysis using deep learning. Automated vulnerability mapping.</p>
-                </div>
-                <div class="card-quantum">
-                    <div class="card-icon">🌀</div>
-                    <h3 style="color:cyan;">Malware Deconstruction</h3>
-                    <p style="color:#bcf;">Reverse engineering of polymorphic & metamorphic malware. Create adaptive vaccines.</p>
-                </div>
+            <div class="cap-card">
+                <div class="cap-num">03</div>
+                <div class="cap-title">Malware Deconstruction</div>
+                <div class="cap-desc">Reverse engineering of polymorphic and metamorphic malware. Design adaptive countermeasures and behavioral vaccines.</div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <footer>
-        <p>© 2324 darkfa1con // QUANTUM SECURITY ARCHITECT // PRESTON LAB</p>
-    </footer>
+</main>
 
-    <canvas id="canvas-bg"></canvas>
+<footer>
+    <div class="footer-logo">darkfa1con //</div>
+    <div class="footer-copy">© 2324 — QUANTUM SECURITY ARCHITECT — PRESTON LAB</div>
+</footer>
 
-    <script>
-        (function() {
-            // ========== AUDIO ==========
-            class QuantumAudio {
-                constructor() { this.ctx = null; }
-                init() {
-                    if (!this.ctx) {
-                        const AudioContext = window.AudioContext || window.webkitAudioContext;
-                        this.ctx = new AudioContext();
-                    }
-                }
-                playStartup() {
-                    if (!this.ctx) return;
-                    const osc = this.ctx.createOscillator();
-                    const gain = this.ctx.createGain();
+<script>
+(function(){
+
+    // ═══════════════════════════════════════════════════
+    //  QUANTUM AUDIO ENGINE  (Web Audio API synthesizer)
+    // ═══════════════════════════════════════════════════
+    let AC = null;
+    let masterGain;
+    let soundEnabled = false;
+    let ambientNode = null;
+    let ambientGain = null;
+
+    function getAC(){
+        if(!AC){
+            AC = new (window.AudioContext || window.webkitAudioContext)();
+            masterGain = AC.createGain();
+            masterGain.gain.value = 0.18;
+            masterGain.connect(AC.destination);
+        }
+        if(AC.state === 'suspended') AC.resume();
+        return AC;
+    }
+
+    // Guard — only play if sound is enabled
+    function play(fn){ if(soundEnabled) fn(); }
+
+    // ── AMBIENT DRONE ──
+    function startAmbient(){
+        if(ambientNode) return;
+        const ac = getAC();
+        ambientGain = ac.createGain();
+        ambientGain.gain.setValueAtTime(0, ac.currentTime);
+        ambientGain.gain.linearRampToValueAtTime(0.07, ac.currentTime + 3);
+        ambientGain.connect(masterGain);
+
+        // Low sub drone
+        const sub = ac.createOscillator();
+        sub.type = 'sine';
+        sub.frequency.value = 42;
+        sub.connect(ambientGain);
+        sub.start();
+
+        // Slightly detuned layer for beating effect
+        const sub2 = ac.createOscillator();
+        sub2.type = 'sine';
+        sub2.frequency.value = 43.2;
+        sub2.connect(ambientGain);
+        sub2.start();
+
+        // High shimmer layer
+        const shimmer = ac.createOscillator();
+        const shimmerGain = ac.createGain();
+        shimmerGain.gain.value = 0.3;
+        shimmer.type = 'sine';
+        shimmer.frequency.value = 528;
+        shimmer.connect(shimmerGain); shimmerGain.connect(ambientGain);
+        shimmer.start();
+
+        // LFO on shimmer pitch
+        const lfo = ac.createOscillator();
+        const lfoGain = ac.createGain();
+        lfo.type = 'sine'; lfo.frequency.value = 0.08;
+        lfoGain.gain.value = 6;
+        lfo.connect(lfoGain); lfoGain.connect(shimmer.frequency);
+        lfo.start();
+
+        // Random glitch crackle every 8-20 seconds
+        function scheduleGlitch(){
+            const delay = 8000 + Math.random() * 12000;
+            setTimeout(()=>{
+                if(!soundEnabled){ scheduleGlitch(); return; }
+                sfxGlitch();
+                scheduleGlitch();
+            }, delay);
+        }
+        scheduleGlitch();
+
+        ambientNode = { sub, sub2, shimmer, lfo };
+    }
+
+    function stopAmbient(){
+        if(!ambientNode || !ambientGain) return;
+        const ac = getAC();
+        ambientGain.gain.linearRampToValueAtTime(0, ac.currentTime + 1);
+    }
+
+    // ── RANDOM GLITCH ──
+    function sfxGlitch(){
+        const ac = getAC();
+        const count = 2 + Math.floor(Math.random()*4);
+        for(let j=0; j<count; j++){
+            const noise = ac.createBuffer(1, ac.sampleRate*0.04, ac.sampleRate);
+            const d = noise.getChannelData(0);
+            for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+            const src = ac.createBufferSource();
+            const f = ac.createBiquadFilter();
+            const env = ac.createGain();
+            const t = ac.currentTime + j*0.05;
+            f.type = 'bandpass';
+            f.frequency.value = 200 + Math.random()*2000;
+            f.Q.value = 2;
+            env.gain.setValueAtTime(0.15, t);
+            env.gain.exponentialRampToValueAtTime(0.001, t+0.04);
+            src.buffer = noise;
+            src.connect(f); f.connect(env); env.connect(masterGain);
+            src.start(t); src.stop(t+0.05);
+        }
+    }
+
+    /* shared reverb impulse */
+    function makeReverb(ac, secs=0.6, decay=2){
+        const sr = ac.sampleRate;
+        const len = sr * secs;
+        const buf = ac.createBuffer(2, len, sr);
+        for(let c=0; c<2; c++){
+            const d = buf.getChannelData(c);
+            for(let i=0; i<len; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/len, decay);
+        }
+        const conv = ac.createConvolver();
+        conv.buffer = buf;
+        return conv;
+    }
+
+    /* ── KEYBOARD TYPING — per boot log line ── */
+    function sfxTypeChar(charIndex){
+        const ac = getAC();
+        const buf = ac.createBuffer(1, ac.sampleRate*0.012, ac.sampleRate);
+        const d = buf.getChannelData(0);
+        for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.2));
+        const src = ac.createBufferSource();
+        const f = ac.createBiquadFilter();
+        const env = ac.createGain();
+        f.type = 'bandpass';
+        f.frequency.value = 1800 + Math.random()*600;
+        f.Q.value = 1.5;
+        env.gain.value = 0.28;
+        src.buffer = buf;
+        src.connect(f); f.connect(env); env.connect(masterGain);
+        src.start();
+    }
+
+    /* ── 1. BOOT BEEP — Linux-style: typewriter keys + sparse terminal beeps ── */
+    function sfxBootBeep(index, total){
+        play(()=>{
+            const ac = getAC();
+
+            // Typewriter: each char is a tight noise transient (mechanical key feel)
+            const lineLen = 18 + Math.floor(Math.random() * 22);
+            const lineDur = 160; // ms total to type this line
+            for(let k = 0; k < lineLen; k++){
+                const delay = (k / lineLen) * lineDur;
+                setTimeout(()=>{
+                    const buf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.009), ac.sampleRate);
+                    const d = buf.getChannelData(0);
+                    for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.18));
+                    const src = ac.createBufferSource();
+                    const hp = ac.createBiquadFilter();
+                    const lp = ac.createBiquadFilter();
+                    const env = ac.createGain();
+                    hp.type = 'highpass'; hp.frequency.value = 1200;
+                    lp.type = 'lowpass';  lp.frequency.value = 5000;
+                    // slight random pitch variation — keys don't all sound identical
+                    const pitchShift = 0.85 + Math.random() * 0.3;
+                    src.playbackRate.value = pitchShift;
+                    env.gain.value = 0.22;
+                    src.buffer = buf;
+                    src.connect(hp); hp.connect(lp); lp.connect(env); env.connect(masterGain);
+                    src.start();
+                }, delay);
+            }
+
+            // Sparse PC-speaker style beep: only on certain "significant" lines
+            // (first line, every 3rd line, last line)
+            const isSignificant = index === 0 || index === total-1 || index % 3 === 0;
+            if(isSignificant){
+                setTimeout(()=>{
+                    // Classic Linux PC-speaker: square wave, short, flat pitch
+                    const osc = ac.createOscillator();
+                    const env = ac.createGain();
+                    osc.type = 'square';
+                    // 440Hz for normal lines, 880Hz for OK/success lines, 220Hz for first
+                    osc.frequency.value = index === 0 ? 220 : index === total-1 ? 880 : 440;
+                    env.gain.setValueAtTime(0.0, ac.currentTime);
+                    env.gain.linearRampToValueAtTime(0.12, ac.currentTime + 0.003);
+                    env.gain.setValueAtTime(0.12, ac.currentTime + 0.06);
+                    env.gain.linearRampToValueAtTime(0.0, ac.currentTime + 0.075);
+                    osc.connect(env); env.connect(masterGain);
+                    osc.start(); osc.stop(ac.currentTime + 0.1);
+                }, lineDur + 10);
+            }
+        });
+    }
+
+    /* ── 2. BOOT COMPLETE — Linux POST style: two sharp square beeps then a soft login tone ── */
+    function sfxBootComplete(){
+        play(()=>{
+            const ac = getAC();
+
+            // BIOS-style double beep (short, square wave, no reverb — raw PC speaker)
+            [[880, 0], [880, 0.13]].forEach(([freq, t])=>{
+                const osc = ac.createOscillator();
+                const env = ac.createGain();
+                osc.type = 'square';
+                osc.frequency.value = freq;
+                env.gain.setValueAtTime(0, ac.currentTime + t);
+                env.gain.linearRampToValueAtTime(0.18, ac.currentTime + t + 0.004);
+                env.gain.setValueAtTime(0.18, ac.currentTime + t + 0.09);
+                env.gain.linearRampToValueAtTime(0, ac.currentTime + t + 0.11);
+                osc.connect(env); env.connect(masterGain);
+                osc.start(ac.currentTime + t);
+                osc.stop(ac.currentTime + t + 0.15);
+            });
+
+            // Soft "login ready" sine tone — like old Linux login sound, subtle
+            setTimeout(()=>{
+                const rev = makeReverb(ac, 0.8, 3);
+                rev.connect(masterGain);
+                [[523, 0], [659, 0.12], [784, 0.24]].forEach(([f, delay])=>{
+                    const osc = ac.createOscillator();
+                    const env = ac.createGain();
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(880, this.ctx.currentTime);
-                    gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
-                    osc.connect(gain);
-                    gain.connect(this.ctx.destination);
-                    osc.start();
-                    osc.stop(this.ctx.currentTime + 0.2);
-                }
-            }
-            const sfx = new QuantumAudio();
-
-            // ========== BOOT SEQUENCE ==========
-            const bootScreen = document.getElementById('boot-screen');
-            const bootText = document.getElementById('boot-text');
-            const progressBar = document.querySelector('.progress-bar');
-            const mainContent = document.getElementById('main-content');
-            const rebootBtn = document.getElementById('reboot-quantum');
-            
-            const bootMessages = [
-                "> INITIATING QUANTUM CORE...",
-                "> GITHUB API CONNECTION... [SECURE]",
-                "> LOADING darkfa1con REPOSITORIES...",
-                "> CYPHER MODULE v3.0 ACTIVATED",
-                "> CONNECTING TO PRESTON LAB...",
-                "> FETCHING USER DATA...",
-                "> DECRYPTING REPOSITORY METADATA...",
-                "> FIREWALL: ACTIVE (BLACK ICE)",
-                "> ROOT ACCESS: GRANTED",
-                "> SYSTEM ONLINE."
-            ];
-
-            function runBoot() {
-                bootScreen.style.display = 'flex';
-                mainContent.style.opacity = '0';
-                bootText.innerHTML = '';
-                progressBar.style.width = '0%';
-                let i = 0;
-                sfx.init();
-
-                const interval = setInterval(() => {
-                    if (i < bootMessages.length) {
-                        const line = document.createElement('div');
-                        line.className = 'boot-line';
-                        line.innerHTML = `<span class="status-pulse"></span> ${bootMessages[i]}`;
-                        bootText.appendChild(line);
-                        const progress = ((i + 1) / bootMessages.length) * 100;
-                        progressBar.style.width = progress + '%';
-                        i++;
-                    } else {
-                        clearInterval(interval);
-                        progressBar.style.width = '100%';
-                        sfx.playStartup();
-                        setTimeout(() => {
-                            bootScreen.style.opacity = '0';
-                            setTimeout(() => {
-                                bootScreen.style.display = 'none';
-                                mainContent.style.opacity = '1';
-                            }, 800);
-                        }, 600);
-                    }
-                }, 200);
-            }
-
-            window.addEventListener('load', runBoot);
-            rebootBtn.addEventListener('click', () => {
-                bootScreen.style.opacity = '1';
-                bootScreen.style.display = 'flex';
-                runBoot();
-            });
-
-            // ========== CURSOR ==========
-            const core = document.querySelector('.cursor-core');
-            const ring = document.querySelector('.cursor-energy-ring');
-            
-            document.addEventListener('mousemove', (e) => {
-                core.style.left = e.clientX + 'px';
-                core.style.top = e.clientY + 'px';
-                ring.style.left = e.clientX + 'px';
-                ring.style.top = e.clientY + 'px';
-                
-                // Energy field follows mouse
-                const energyField = document.getElementById('energy-field');
-                energyField.style.setProperty('--mouse-x', e.clientX / window.innerWidth * 100 + '%');
-                energyField.style.setProperty('--mouse-y', e.clientY / window.innerHeight * 100 + '%');
-            });
-
-            // Cursor ring size on click
-            document.addEventListener('mousedown', () => {
-                ring.style.width = '100px';
-                ring.style.height = '100px';
-            });
-            
-            document.addEventListener('mouseup', () => {
-                ring.style.width = '80px';
-                ring.style.height = '80px';
-            });
-
-            // ========== SCROLL REVEAL ==========
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('revealed');
+                    osc.frequency.value = f;
+                    const t = ac.currentTime + delay;
+                    env.gain.setValueAtTime(0, t);
+                    env.gain.linearRampToValueAtTime(0.22, t + 0.015);
+                    env.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+                    osc.connect(env); env.connect(rev);
+                    osc.start(t); osc.stop(t + 0.5);
                 });
-            }, { threshold: 0.1, rootMargin: '0px' });
-            document.querySelectorAll('section').forEach(s => observer.observe(s));
+            }, 350);
+        });
+    }
 
-            // ========== GITHUB REPOSITORY FETCHER (AUTO, NO SEARCH) ==========
-            const repoContainer = document.getElementById('repo-container');
-            const githubStats = document.getElementById('github-stats');
-            const repoCount = document.getElementById('repo-count');
+    /* ── 3. HOVER TICK — ultra-subtle high-freq click ── */
+    let lastTick = 0;
+    function sfxTick(){
+        const now = Date.now();
+        if(now - lastTick < 40) return;
+        lastTick = now;
+        play(()=>{
+            const ac = getAC();
+            const buf = ac.createBuffer(1, ac.sampleRate * 0.015, ac.sampleRate);
+            const d = buf.getChannelData(0);
+            for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/d.length, 6);
+            const src = ac.createBufferSource();
+            const filter = ac.createBiquadFilter();
+            const env = ac.createGain();
+            filter.type = 'highpass';
+            filter.frequency.value = 3000;
+            src.buffer = buf;
+            env.gain.value = 0.35;
+            src.connect(filter); filter.connect(env); env.connect(masterGain);
+            src.start();
+        });
+    }
 
-            // Language colors for dots
-            const langColors = {
-                'JavaScript': '#f1e05a',
-                'Python': '#3572A5',
-                'Java': '#b07219',
-                'HTML': '#e34c26',
-                'CSS': '#563d7c',
-                'TypeScript': '#2b7489',
-                'C++': '#f34b7d',
-                'C': '#555555',
-                'Ruby': '#701516',
-                'Go': '#00ADD8',
-                'Rust': '#dea584',
-                'PHP': '#4F5D95',
-                'Swift': '#ffac45',
-                'Kotlin': '#F18E33',
-                'default': '#00ffff'
-            };
+    /* ── 4. CLICK — sharp mechanical thunk ── */
+    function sfxClick(){
+        play(()=>{
+            const ac = getAC();
+            const buf = ac.createBuffer(1, ac.sampleRate * 0.06, ac.sampleRate);
+            const d = buf.getChannelData(0);
+            for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.15));
+            const src = ac.createBufferSource();
+            const filter = ac.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 800;
+            filter.Q.value = 0.5;
+            const env = ac.createGain();
+            env.gain.value = 0.7;
+            src.buffer = buf;
+            src.connect(filter); filter.connect(env); env.connect(masterGain);
+            src.start();
+        });
+    }
 
-            async function fetchGitHubRepos(username) {
-                repoContainer.innerHTML = '<div class="github-loading"><div class="loading-spinner"></div><div>🌀 QUANTUM LINK ESTABLISHING...</div><div style="font-size:1.2rem;">FETCHING REPOSITORIES FROM GITHUB MATRIX</div></div>';
-                
-                try {
-                    // Fetch repos
-                    const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
-                    
-                    if (!reposResponse.ok) {
-                        if (reposResponse.status === 404) {
-                            throw new Error('USER NOT FOUND IN MATRIX');
-                        } else {
-                            throw new Error(`GITHUB API ERROR: ${reposResponse.status}`);
-                        }
-                    }
-                    
-                    const repos = await reposResponse.json();
-                    
-                    // Fetch user data for stats
-                    const userResponse = await fetch(`https://api.github.com/users/${username}`);
-                    const userData = await userResponse.json();
-                    
-                    // Update stats
-                    githubStats.style.display = 'flex';
-                    repoCount.textContent = `${repos.length} repositories`;
-                    
-                    if (repos.length === 0) {
-                        repoContainer.innerHTML = '<div class="github-error">📦 NO REPOSITORIES FOUND FOR THIS USER</div>';
-                        return;
-                    }
-                    
-                    // Sort by updated date (most recent first)
-                    repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
-                    
-                    // Render repos
-                    let reposHTML = '';
-                    repos.forEach((repo, index) => {
-                        const langColor = langColors[repo.language] || langColors.default;
-                        const updated = new Date(repo.updated_at).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                        });
-                        
-                        // Get topics (if any)
-                        const topics = repo.topics || [];
-                        const topicsHTML = topics.slice(0, 5).map(topic => 
-                            `<span class="topic-tag">${topic}</span>`
-                        ).join('');
-                        
-                        reposHTML += `
-                            <div class="repo-card" style="--card-index: ${index}" onclick="window.open('${repo.html_url}', '_blank')">
-                                <div class="repo-name">
-                                    <i>📁</i> ${repo.name}
-                                </div>
-                                <div class="repo-description">
-                                    ${repo.description || '🚀 No description provided'}
-                                </div>
-                                <div class="repo-meta">
-                                    <div class="repo-language">
-                                        <span class="lang-dot" style="background: ${langColor}; box-shadow: 0 0 15px ${langColor};"></span>
-                                        ${repo.language || 'Unknown'}
-                                    </div>
-                                    <div class="repo-stars">
-                                        <span>⭐</span> ${repo.stargazers_count}
-                                    </div>
-                                    <div class="repo-forks">
-                                        <span>🔱</span> ${repo.forks_count}
-                                    </div>
-                                </div>
-                                ${topicsHTML ? `<div class="repo-topics">${topicsHTML}</div>` : ''}
-                                <div class="repo-footer">
-                                    <span class="repo-date">📅 Last quantum sync: ${updated}</span>
-                                    <span class="repo-link">ACCESS →</span>
-                                </div>
+    /* ── 5. REPO CARD HOVER — soft woosh + shimmer ── */
+    function sfxCardHover(){
+        play(()=>{
+            const ac = getAC();
+            const osc = ac.createOscillator();
+            const lfo = ac.createOscillator();
+            const lfoGain = ac.createGain();
+            const env = ac.createGain();
+            const filter = ac.createBiquadFilter();
+            osc.type = 'sawtooth';
+            osc.frequency.value = 180;
+            lfo.type = 'sine';
+            lfo.frequency.value = 14;
+            lfoGain.gain.value = 60;
+            filter.type = 'lowpass';
+            filter.frequency.value = 600;
+            filter.Q.value = 4;
+            env.gain.setValueAtTime(0, ac.currentTime);
+            env.gain.linearRampToValueAtTime(0.25, ac.currentTime + 0.03);
+            env.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.22);
+            lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+            osc.connect(filter); filter.connect(env); env.connect(masterGain);
+            lfo.start(); osc.start(); lfo.stop(ac.currentTime+0.25); osc.stop(ac.currentTime+0.25);
+        });
+    }
+
+    /* ── 6. NAV LINK HOVER — quick digital ping ── */
+    function sfxNavHover(){
+        play(()=>{
+            const ac = getAC();
+            const osc = ac.createOscillator();
+            const env = ac.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(1200, ac.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(800, ac.currentTime+0.1);
+            env.gain.setValueAtTime(0.3, ac.currentTime);
+            env.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.12);
+            osc.connect(env); env.connect(masterGain);
+            osc.start(); osc.stop(ac.currentTime+0.13);
+        });
+    }
+
+    /* ── 7. SECTION REVEAL — low cinematic thud ── */
+    function sfxReveal(){
+        play(()=>{
+            const ac = getAC();
+            const osc = ac.createOscillator();
+            const env = ac.createGain();
+            const rev = makeReverb(ac, 0.8, 2.5);
+            rev.connect(masterGain);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(80, ac.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, ac.currentTime+0.4);
+            env.gain.setValueAtTime(0, ac.currentTime);
+            env.gain.linearRampToValueAtTime(0.9, ac.currentTime+0.02);
+            env.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.5);
+            osc.connect(env); env.connect(rev);
+            osc.start(); osc.stop(ac.currentTime+0.6);
+            const osc2 = ac.createOscillator();
+            const env2 = ac.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.value = 1800;
+            env2.gain.setValueAtTime(0.15, ac.currentTime+0.02);
+            env2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+0.4);
+            osc2.connect(env2); env2.connect(rev);
+            osc2.start(ac.currentTime+0.02); osc2.stop(ac.currentTime+0.5);
+        });
+    }
+
+    /* ── 8. REINIT BUTTON — glitchy zap ── */
+    function sfxZap(){
+        play(()=>{
+            const ac = getAC();
+            for(let j=0;j<3;j++){
+                const noise = ac.createBuffer(1, ac.sampleRate*0.08, ac.sampleRate);
+                const d = noise.getChannelData(0);
+                for(let i=0;i<d.length;i++) d[i] = Math.random()*2-1;
+                const src = ac.createBufferSource();
+                const filter = ac.createBiquadFilter();
+                const env = ac.createGain();
+                const t = ac.currentTime + j*0.06;
+                filter.type = 'bandpass';
+                filter.frequency.value = 400 + j*800;
+                filter.Q.value = 1;
+                env.gain.setValueAtTime(0.6, t);
+                env.gain.exponentialRampToValueAtTime(0.001, t+0.07);
+                src.buffer = noise;
+                src.connect(filter); filter.connect(env); env.connect(masterGain);
+                src.start(t); src.stop(t+0.09);
+            }
+        });
+    }
+
+    /* ── 9. REPOS LOADED — ascending digital fanfare ── */
+    function sfxReposLoaded(){
+        play(()=>{
+            const ac = getAC();
+            const rev = makeReverb(ac, 1.5, 2);
+            rev.connect(masterGain);
+            const notes = [261, 329, 392, 523, 659, 784];
+            notes.forEach((f, i) => {
+                const osc = ac.createOscillator();
+                const env = ac.createGain();
+                const t = ac.currentTime + i*0.07;
+                osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+                osc.frequency.value = f;
+                env.gain.setValueAtTime(0, t);
+                env.gain.linearRampToValueAtTime(0.35, t+0.02);
+                env.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+                osc.connect(env); env.connect(rev);
+                osc.start(t); osc.stop(t+0.6);
+            });
+        });
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  CURSOR
+    // ═══════════════════════════════════════════════════
+    const cur = document.getElementById('cursor');
+    const dot = document.getElementById('cursor-dot');
+    let mx=0, my=0, cx=0, cy=0;
+    document.addEventListener('mousemove', e => {
+        mx=e.clientX; my=e.clientY;
+        dot.style.cssText=`left:${mx}px;top:${my}px`;
+    });
+    function animCursor(){
+        cx += (mx-cx)*0.15;
+        cy += (my-cy)*0.15;
+        cur.style.cssText=`left:${cx}px;top:${cy}px`;
+        requestAnimationFrame(animCursor);
+    }
+    animCursor();
+
+    // ═══════════════════════════════════════════════════
+    //  CLOCK
+    // ═══════════════════════════════════════════════════
+    function updateClock(){
+        const t = new Date();
+        const p = n => String(n).padStart(2,'0');
+        document.getElementById('clock').innerHTML =
+            `${p(t.getHours())}:${p(t.getMinutes())}:${p(t.getSeconds())} <span class="ok">UTC+0</span>`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ═══════════════════════════════════════════════════
+    //  BOOT SEQUENCE
+    // ═══════════════════════════════════════════════════
+    const bootEl   = document.getElementById('boot');
+    const bootLog  = document.getElementById('boot-log');
+    const bootProg = document.getElementById('boot-progress');
+    const msgs = [
+        {t:'> INITIATING QUANTUM CORE...', c:''},
+        {t:'> GITHUB API CONNECTION...', c:'ok', s:' [SECURE]'},
+        {t:'> LOADING darkfa1con REPOSITORIES...', c:''},
+        {t:'> CYPHER MODULE v3.0 ACTIVATED', c:'ok'},
+        {t:'> CONNECTING TO PRESTON LAB...', c:''},
+        {t:'> FETCHING USER DATA...', c:''},
+        {t:'> DECRYPTING REPOSITORY METADATA...', c:''},
+        {t:'> FIREWALL: ACTIVE', c:'ok', s:' (BLACK ICE)'},
+        {t:'> ROOT ACCESS: GRANTED', c:'ok'},
+        {t:'> SYSTEM ONLINE.', c:'ok'},
+    ];
+
+    function runBoot(cb){
+        bootLog.innerHTML='';
+        bootProg.style.width='0%';
+        let i=0;
+        const iv = setInterval(()=>{
+            if(i>=msgs.length){
+                clearInterval(iv);
+                sfxBootComplete();
+                if(cb) setTimeout(cb, 400);
+                return;
+            }
+            const m = msgs[i];
+            const div = document.createElement('div');
+            div.innerHTML = m.c==='ok'
+                ? `<span class="ok">${m.t}${m.s||''}</span>`
+                : m.c==='warn'
+                ? `<span class="warn">${m.t}${m.s||''}</span>`
+                : `${m.t}${m.s||''}`;
+            bootLog.appendChild(div);
+            bootProg.style.width = ((i+1)/msgs.length*100)+'%';
+            sfxBootBeep(i, msgs.length);
+            i++;
+        }, 210);
+    }
+
+    // ═══════════════════════════════════════════════════
+    //  SOUND TOGGLE (nav button only)
+    // ═══════════════════════════════════════════════════
+    soundEnabled = true;
+    const soundBtn = document.getElementById('sound-btn');
+
+    soundBtn.addEventListener('click', ()=>{
+        soundEnabled = !soundEnabled;
+        soundBtn.textContent = soundEnabled ? '♪ SFX: ON' : '♪ SFX: OFF';
+        soundBtn.classList.toggle('muted', !soundEnabled);
+        if(soundEnabled){
+            getAC();
+            startAmbient();
+        } else {
+            stopAmbient();
+        }
+    });
+
+    // Boot starts immediately — audio unlocks on first user interaction with the page
+    document.addEventListener('click', ()=>{ if(AC) AC.resume(); }, { once: true });
+    document.addEventListener('keydown', ()=>{ if(AC) AC.resume(); }, { once: true });
+
+    runBoot(()=>{
+        bootEl.classList.add('hidden');
+        setTimeout(()=>{
+            fetchRepos('darkfa1con');
+            startAmbient();
+        }, 400);
+    });
+
+    document.getElementById('reinit-btn').addEventListener('click', ()=>{
+        sfxZap();
+        bootEl.style.opacity='';
+        bootEl.style.visibility='';
+        bootEl.classList.remove('hidden');
+        runBoot(()=>{ bootEl.classList.add('hidden'); });
+    });
+
+    // ═══════════════════════════════════════════════════
+    //  HOVER / CLICK SOUND BINDINGS
+    // ═══════════════════════════════════════════════════
+
+    // Nav links
+    document.querySelectorAll('.nav-links a').forEach(el=>{
+        el.addEventListener('mouseenter', sfxNavHover);
+    });
+    document.querySelector('.nav-sound').addEventListener('mouseenter', sfxNavHover);
+
+    // Hero CTA
+    document.querySelector('.hero-cta')?.addEventListener('mouseenter', sfxCardHover);
+
+    // All buttons / interactive elements — click sound
+    document.addEventListener('click', e=>{
+        if(e.target.closest('a, button, .repo-card, .cap-card')) sfxClick();
+    });
+
+    // Subtle tick on any element hover (throttled)
+    document.addEventListener('mousemove', ()=> sfxTick());
+
+    // ═══════════════════════════════════════════════════
+    //  SCROLL REVEAL (with sound)
+    // ═══════════════════════════════════════════════════
+    const revealObserver = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+            if(e.isIntersecting && !e.target.classList.contains('visible')){
+                e.target.classList.add('visible');
+                sfxReveal();
+            }
+        });
+    },{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+    // ═══════════════════════════════════════════════════
+    //  REPO CARD HOVER SOUND (delegated)
+    // ═══════════════════════════════════════════════════
+    document.getElementById('repo-grid').addEventListener('mouseover', e=>{
+        const card = e.target.closest('.repo-card');
+        if(card && !card._hoverPlayed){
+            card._hoverPlayed = true;
+            sfxCardHover();
+            card.addEventListener('mouseleave', ()=>{ card._hoverPlayed = false; }, {once:true});
+        }
+    });
+
+    // ═══════════════════════════════════════════════════
+    //  GITHUB FETCH
+    // ═══════════════════════════════════════════════════
+    const langColors = {
+        JavaScript:'#f1e05a', Python:'#3572A5', Java:'#b07219', HTML:'#e34c26',
+        CSS:'#563d7c', TypeScript:'#2b7489', 'C++':'#f34b7d', C:'#555555',
+        Ruby:'#701516', Go:'#00ADD8', Rust:'#dea584', PHP:'#4F5D95',
+        Swift:'#ffac45', Kotlin:'#F18E33', Shell:'#89e051', Vue:'#41b883',
+        default:'#00f5ff'
+    };
+
+    async function fetchRepos(username){
+        const grid = document.getElementById('repo-grid');
+        grid.innerHTML = `<div class="state-box"><div class="spinner"></div><div class="state-label">Fetching from GitHub matrix...</div></div>`;
+
+        try {
+            const [reposRes, userRes] = await Promise.all([
+                fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`),
+                fetch(`https://api.github.com/users/${username}`)
+            ]);
+            if(!reposRes.ok) throw new Error(reposRes.status===404?'User not found':`API Error ${reposRes.status}`);
+
+            const repos = await reposRes.json();
+
+            const meta = document.getElementById('github-meta');
+            meta.style.display='flex';
+            document.getElementById('stat-repos').textContent = `${repos.length} repos`;
+            const totalStars = repos.reduce((s,r)=>s+r.stargazers_count,0);
+            document.getElementById('stat-stars').textContent = `${totalStars} stars`;
+
+            if(repos.length===0){
+                grid.innerHTML=`<div class="state-box"><div class="state-label">No repositories found</div></div>`;
+                return;
+            }
+            repos.sort((a,b)=>new Date(b.updated_at)-new Date(a.updated_at));
+
+            grid.innerHTML = repos.map((repo)=>{
+                const lc = langColors[repo.language]||langColors.default;
+                const topics = (repo.topics||[]).slice(0,4).map(t=>`<span class="repo-tag">${t}</span>`).join('');
+                return `
+                <div class="repo-card" onclick="window.open('${repo.html_url}','_blank')" title="${repo.name}">
+                    <div class="repo-top">
+                        <div class="repo-name">${repo.name}</div>
+                        <div class="repo-icon">${repo.fork?'⑂':'⬡'}</div>
+                    </div>
+                    <div class="repo-desc">${repo.description||'No description provided.'}</div>
+                    ${topics?`<div class="repo-tags">${topics}</div>`:''}
+                    <div class="repo-bottom">
+                        <div class="repo-stats">
+                            <div class="repo-stat">
+                                <span class="lang-dot" style="background:${lc};box-shadow:0 0 8px ${lc}"></span>
+                                ${repo.language||'—'}
                             </div>
-                        `;
-                    });
-                    
-                    repoContainer.innerHTML = reposHTML;
-                    
-                } catch (error) {
-                    repoContainer.innerHTML = `<div class="github-error">⚠️ QUANTUM ERROR: ${error.message}</div>`;
-                    githubStats.style.display = 'none';
-                }
-            }
+                            <div class="repo-stat">⭐ ${repo.stargazers_count}</div>
+                            <div class="repo-stat">⑂ ${repo.forks_count}</div>
+                        </div>
+                        <a class="repo-link" href="${repo.html_url}" target="_blank" onclick="event.stopPropagation()">View →</a>
+                    </div>
+                </div>`;
+            }).join('');
 
-            // Auto-fetch on load with darkfa1con
-            setTimeout(() => {
-                fetchGitHubRepos('darkfa1con');
-            }, 2500); // Delay to let boot screen finish
+            sfxReposLoaded();
 
-            // ========== CANVAS BACKGROUND ==========
-            const canvas = document.getElementById('canvas-bg');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            
-            function resize() {
-                width = window.innerWidth;
-                height = window.innerHeight;
-                canvas.width = width;
-                canvas.height = height;
-            }
-            window.addEventListener('resize', resize);
-            resize();
+        } catch(err) {
+            document.getElementById('repo-grid').innerHTML =
+                `<div class="state-box"><div class="state-label" style="color:var(--magenta)">⚠ ${err.message}</div></div>`;
+            document.getElementById('github-meta').style.display='none';
+        }
+    }
 
-            // Enhanced particle system
-            const particles = [];
-            for (let i = 0; i < 80; i++) {
-                particles.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.2,
-                    vy: (Math.random() - 0.5) * 0.2,
-                    size: Math.random() * 3 + 1,
-                    phase: Math.random() * Math.PI * 2
-                });
-            }
-
-            const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-            const columns = 100;
-            const drops = Array(columns).fill(1).map(() => Math.random() * 100);
-
-            function draw() {
-                ctx.fillStyle = 'rgba(2, 2, 8, 0.1)';
-                ctx.fillRect(0, 0, width, height);
-
-                // Matrix rain with gradient
-                ctx.font = '18px monospace';
-                for (let i = 0; i < drops.length; i++) {
-                    const char = chars[Math.floor(Math.random() * chars.length)];
-                    const gradient = ctx.createLinearGradient(0, drops[i] * 20, 0, drops[i] * 20 + 20);
-                    gradient.addColorStop(0, 'cyan');
-                    gradient.addColorStop(1, 'magenta');
-                    ctx.fillStyle = gradient;
-                    ctx.globalAlpha = 0.2;
-                    ctx.fillText(char, i * 15, drops[i] * 20);
-                    if (drops[i] * 20 > height && Math.random() > 0.99) drops[i] = 0;
-                    drops[i] += 0.5;
-                }
-
-                // Enhanced particles
-                ctx.globalAlpha = 1;
-                particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.phase += 0.02;
-                    
-                    if (p.x < 0 || p.x > width) p.vx *= -1;
-                    if (p.y < 0 || p.y > height) p.vy *= -1;
-
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size + Math.sin(p.phase) * 0.5, 0, Math.PI * 2);
-                    
-                    const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2);
-                    gradient.addColorStop(0, 'cyan');
-                    gradient.addColorStop(1, 'transparent');
-                    ctx.fillStyle = gradient;
-                    ctx.shadowColor = 'cyan';
-                    ctx.shadowBlur = 15;
-                    ctx.fill();
-                });
-
-                // Draw connections
-                ctx.shadowBlur = 0;
-                for (let a = 0; a < particles.length; a++) {
-                    for (let b = a + 1; b < particles.length; b++) {
-                        const dx = particles[a].x - particles[b].x;
-                        const dy = particles[a].y - particles[b].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 150) {
-                            ctx.beginPath();
-                            const gradient = ctx.createLinearGradient(particles[a].x, particles[a].y, particles[b].x, particles[b].y);
-                            gradient.addColorStop(0, 'rgba(0, 255, 255, 0.2)');
-                            gradient.addColorStop(1, 'rgba(255, 0, 255, 0.2)');
-                            ctx.strokeStyle = gradient;
-                            ctx.lineWidth = 0.5;
-                            ctx.moveTo(particles[a].x, particles[a].y);
-                            ctx.lineTo(particles[b].x, particles[b].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(draw);
-            }
-            draw();
-        })();
-    </script>
+})();
+</script>
 </body>
 </html>
