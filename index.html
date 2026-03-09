@@ -976,65 +976,9 @@
     // Guard — only play if sound is enabled
     function play(fn){ if(soundEnabled) fn(); }
 
-    // ── AMBIENT DRONE ──
-    function startAmbient(){
-        if(ambientNode) return;
-        const ac = getAC();
-        ambientGain = ac.createGain();
-        ambientGain.gain.setValueAtTime(0, ac.currentTime);
-        ambientGain.gain.linearRampToValueAtTime(0.07, ac.currentTime + 3);
-        ambientGain.connect(masterGain);
-
-        // Low sub drone
-        const sub = ac.createOscillator();
-        sub.type = 'sine';
-        sub.frequency.value = 42;
-        sub.connect(ambientGain);
-        sub.start();
-
-        // Slightly detuned layer for beating effect
-        const sub2 = ac.createOscillator();
-        sub2.type = 'sine';
-        sub2.frequency.value = 43.2;
-        sub2.connect(ambientGain);
-        sub2.start();
-
-        // High shimmer layer
-        const shimmer = ac.createOscillator();
-        const shimmerGain = ac.createGain();
-        shimmerGain.gain.value = 0.3;
-        shimmer.type = 'sine';
-        shimmer.frequency.value = 528;
-        shimmer.connect(shimmerGain); shimmerGain.connect(ambientGain);
-        shimmer.start();
-
-        // LFO on shimmer pitch
-        const lfo = ac.createOscillator();
-        const lfoGain = ac.createGain();
-        lfo.type = 'sine'; lfo.frequency.value = 0.08;
-        lfoGain.gain.value = 6;
-        lfo.connect(lfoGain); lfoGain.connect(shimmer.frequency);
-        lfo.start();
-
-        // Random glitch crackle every 8-20 seconds
-        function scheduleGlitch(){
-            const delay = 8000 + Math.random() * 12000;
-            setTimeout(()=>{
-                if(!soundEnabled){ scheduleGlitch(); return; }
-                sfxGlitch();
-                scheduleGlitch();
-            }, delay);
-        }
-        scheduleGlitch();
-
-        ambientNode = { sub, sub2, shimmer, lfo };
-    }
-
-    function stopAmbient(){
-        if(!ambientNode || !ambientGain) return;
-        const ac = getAC();
-        ambientGain.gain.linearRampToValueAtTime(0, ac.currentTime + 1);
-    }
+    // ── AMBIENT (disabled) ──
+    function startAmbient(){ /* no ambient drone */ }
+    function stopAmbient(){}
 
     // ── RANDOM GLITCH ──
     function sfxGlitch(){
