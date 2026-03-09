@@ -773,6 +773,8 @@
             transform: translateY(0);
         }
 
+        @keyframes bootBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
         /* ── RESPONSIVE ── */
         @media (max-width: 900px) {
             #hero { grid-template-columns: 1fr; padding: 80px 30px 60px; }
@@ -818,8 +820,12 @@
         <div class="boot-corner bl"></div>
         <div class="boot-corner br"></div>
         <div class="boot-title">DARKFA1CON // QUANTUM INTERFACE</div>
-        <div class="boot-log" id="boot-log"></div>
-        <div class="boot-progress-wrap">
+        <div id="boot-prompt" style="display:flex;flex-direction:column;align-items:center;gap:18px;padding:40px 0 20px;">
+            <div style="font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;">System ready</div>
+            <div id="boot-prompt-blink" style="font-family:'DM Mono',monospace;font-size:0.9rem;letter-spacing:3px;color:var(--cyan);animation:bootBlink 1s step-end infinite;">▶ PRESS ANY KEY TO BOOT</div>
+        </div>
+        <div class="boot-log" id="boot-log" style="display:none"></div>
+        <div class="boot-progress-wrap" style="display:none">
             <div class="boot-progress-bar" id="boot-progress"></div>
         </div>
     </div>
@@ -1419,32 +1425,54 @@
         soundEnabled = !soundEnabled;
         soundBtn.textContent = soundEnabled ? '♪ SFX: ON' : '♪ SFX: OFF';
         soundBtn.classList.toggle('muted', !soundEnabled);
-        if(soundEnabled){
-            getAC();
-            startAmbient();
-        } else {
-            stopAmbient();
-        }
+        if(soundEnabled){ getAC(); startAmbient(); }
+        else stopAmbient();
     });
 
-    // Boot starts immediately — audio unlocks on first user interaction with the page
-    document.addEventListener('click', ()=>{ if(AC) AC.resume(); }, { once: true });
-    document.addEventListener('keydown', ()=>{ if(AC) AC.resume(); }, { once: true });
+    // ═══════════════════════════════════════════════════
+    //  BOOT — wait for first gesture so AudioContext unlocks
+    // ═══════════════════════════════════════════════════
+    const bootPrompt   = document.getElementById('boot-prompt');
+    const bootProgWrap = document.querySelector('.boot-progress-wrap');
 
-    runBoot(()=>{
-        bootEl.classList.add('hidden');
-        setTimeout(()=>{
-            fetchRepos('darkfa1con');
-            startAmbient();
-        }, 400);
-    });
+    function showBootUI(){
+        bootPrompt.style.display  = 'none';
+        bootLog.style.display     = 'block';
+        bootProgWrap.style.display = 'block';
+    }
+
+    function startBootSequence(){
+        showBootUI();
+        getAC(); // AudioContext is now unlocked by the gesture
+        runBoot(()=>{
+            bootEl.classList.add('hidden');
+            setTimeout(()=>{ fetchRepos('darkfa1con'); startAmbient(); }, 400);
+        });
+    }
+
+    function onBootGesture(){
+        bootEl.removeEventListener('click',   onBootGesture);
+        document.removeEventListener('keydown', onBootGesture);
+        startBootSequence();
+    }
+    bootEl.addEventListener('click',    onBootGesture);
+    document.addEventListener('keydown', onBootGesture);
 
     document.getElementById('reinit-btn').addEventListener('click', ()=>{
         sfxZap();
-        bootEl.style.opacity='';
-        bootEl.style.visibility='';
+        bootEl.style.opacity   = '';
+        bootEl.style.visibility = '';
         bootEl.classList.remove('hidden');
-        runBoot(()=>{ bootEl.classList.add('hidden'); });
+        bootPrompt.style.display   = 'flex';
+        bootLog.style.display      = 'none';
+        bootProgWrap.style.display = 'none';
+        bootLog.innerHTML = '';
+        function onReinitGesture(){
+            bootEl.removeEventListener('click', onReinitGesture);
+            showBootUI();
+            runBoot(()=>{ bootEl.classList.add('hidden'); });
+        }
+        bootEl.addEventListener('click', onReinitGesture);
     });
 
     // ═══════════════════════════════════════════════════
